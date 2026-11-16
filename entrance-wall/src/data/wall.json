@@ -1,59 +1,763 @@
 {
-  "version": "2.1",
-  "wall": { "length": 18, "height": 3.4, "bays": 8, "caseStart": 4.2, "caseEnd": 16.2 },
+  "version": "2.2",
+  "wall": {
+    "length": 18,
+    "height": 3.4,
+    "bays": 8,
+    "caseStart": 4.2,
+    "caseEnd": 16.2
+  },
   "zones": [
-    { "id": "title.zh", "bay": 0, "label": "TITLE ZH · ≤8 CHARS", "x": 0.35, "y": 1.65, "w": 0.55, "h": 1.15, "chars": 8, "lines": 8, "align": "center", "style": "verticalTitle", "text": { "en": "", "zh": "" } },
-    { "id": "title.en", "bay": 0, "label": "TITLE EN · ≤6 WORDS", "x": 1.25, "y": 2.25, "w": 2.55, "h": 0.4, "words": 6, "lines": 1, "align": "left", "style": "title", "text": { "en": "", "zh": "" } },
-    { "id": "subtitle", "bay": 0, "label": "SUBTITLE · ≤18 WORDS", "x": 1.25, "y": 1.98, "w": 2.55, "h": 0.18, "words": 18, "lines": 1, "align": "left", "style": "subtitle", "text": { "en": "", "zh": "" } },
-    { "id": "dates", "bay": 0, "label": "DATES · 1 LINE", "x": 1.25, "y": 1.76, "w": 0.72, "h": 0.13, "lines": 1, "align": "left", "style": "meta", "text": { "en": "", "zh": "" } },
-    { "id": "organizer", "bay": 0, "label": "ORGANIZER · 1 LINE", "x": 2.05, "y": 1.76, "w": 0.95, "h": 0.13, "lines": 1, "align": "left", "style": "meta", "text": { "en": "", "zh": "" } },
-    { "id": "curators", "bay": 0, "label": "CURATORS · 1 LINE", "x": 3.08, "y": 1.76, "w": 0.72, "h": 0.13, "lines": 1, "align": "left", "style": "meta", "text": { "en": "", "zh": "" } },
-    { "id": "thesis", "bay": 0, "label": "THESIS · 80–120 WORDS / ≤6 LINES", "x": 2.15, "y": 0.34, "w": 1.65, "h": 0.92, "words": 120, "lines": 6, "align": "left", "style": "body", "text": { "en": "", "zh": "" } },
-    { "id": "rule", "bay": 0, "label": "RULE · STAYS / CHANGES · ≤30 WORDS", "x": 0.35, "y": 0.72, "w": 1.5, "h": 0.46, "words": 30, "lines": 2, "align": "left", "style": "body", "text": { "en": "", "zh": "" } },
-    { "id": "section.01", "bay": 1, "label": "SECTION 01 · 2–4 WORDS", "x": 4.35, "y": 2.28, "w": 1.7, "h": 0.18, "words": 4, "lines": 1, "align": "left", "style": "section", "text": { "en": "", "zh": "" } },
-    { "id": "object.01.name", "bay": 1, "label": "OBJECT 01 NAME · ≤4 WORDS", "x": 4.35, "y": 1.94, "w": 1.7, "h": 0.22, "words": 4, "lines": 1, "align": "left", "style": "object", "text": { "en": "", "zh": "" } },
-    { "id": "caption.01", "bay": 1, "label": "CAPTION 01 · 40–60 WORDS / ≤4 LINES", "x": 4.35, "y": 1.59, "w": 1.7, "h": 0.3, "words": 60, "lines": 4, "align": "left", "style": "caption", "text": { "en": "", "zh": "" } },
-    { "id": "meta.01", "bay": 1, "label": "DATE / MEDIUM / LENDER", "x": 4.35, "y": 1.44, "w": 1.7, "h": 0.07, "lines": 1, "align": "left", "style": "meta", "text": { "en": "", "zh": "" } },
-    { "id": "section.02", "bay": 2, "label": "SECTION 02 · 2–4 WORDS", "x": 6.35, "y": 2.28, "w": 1.7, "h": 0.18, "words": 4, "lines": 1, "align": "left", "style": "section", "text": { "en": "", "zh": "" } },
-    { "id": "object.02.name", "bay": 2, "label": "OBJECT 02 NAME · ≤4 WORDS", "x": 6.35, "y": 1.94, "w": 1.7, "h": 0.22, "words": 4, "lines": 1, "align": "left", "style": "object", "text": { "en": "", "zh": "" } },
-    { "id": "caption.02", "bay": 2, "label": "CAPTION 02 · 40–60 WORDS / ≤4 LINES", "x": 6.35, "y": 1.59, "w": 1.7, "h": 0.3, "words": 60, "lines": 4, "align": "left", "style": "caption", "text": { "en": "", "zh": "" } },
-    { "id": "meta.02", "bay": 2, "label": "DATE / MEDIUM / LENDER", "x": 6.35, "y": 1.44, "w": 1.7, "h": 0.07, "lines": 1, "align": "left", "style": "meta", "text": { "en": "", "zh": "" } },
-    { "id": "section.03", "bay": 3, "label": "SECTION 03 · 2–4 WORDS", "x": 8.35, "y": 2.28, "w": 1.7, "h": 0.18, "words": 4, "lines": 1, "align": "left", "style": "section", "text": { "en": "", "zh": "" } },
-    { "id": "object.03.name", "bay": 3, "label": "OBJECT 03 NAME · ≤4 WORDS", "x": 8.35, "y": 1.94, "w": 1.7, "h": 0.22, "words": 4, "lines": 1, "align": "left", "style": "object", "text": { "en": "", "zh": "" } },
-    { "id": "caption.03", "bay": 3, "label": "CAPTION 03 · 40–60 WORDS / ≤4 LINES", "x": 8.35, "y": 1.59, "w": 1.7, "h": 0.3, "words": 60, "lines": 4, "align": "left", "style": "caption", "text": { "en": "", "zh": "" } },
-    { "id": "meta.03", "bay": 3, "label": "DATE / MEDIUM / LENDER", "x": 8.35, "y": 1.44, "w": 1.7, "h": 0.07, "lines": 1, "align": "left", "style": "meta", "text": { "en": "", "zh": "" } },
-    { "id": "section.04", "bay": 4, "label": "SECTION 04 · 2–4 WORDS", "x": 10.35, "y": 2.28, "w": 1.7, "h": 0.18, "words": 4, "lines": 1, "align": "left", "style": "section", "text": { "en": "", "zh": "" } },
-    { "id": "object.04.name", "bay": 4, "label": "OBJECT 04 NAME · ≤4 WORDS", "x": 10.35, "y": 1.94, "w": 1.7, "h": 0.22, "words": 4, "lines": 1, "align": "left", "style": "object", "text": { "en": "", "zh": "" } },
-    { "id": "caption.04", "bay": 4, "label": "CAPTION 04 · 40–60 WORDS / ≤4 LINES", "x": 10.35, "y": 1.59, "w": 1.7, "h": 0.3, "words": 60, "lines": 4, "align": "left", "style": "caption", "text": { "en": "", "zh": "" } },
-    { "id": "meta.04", "bay": 4, "label": "DATE / MEDIUM / LENDER", "x": 10.35, "y": 1.44, "w": 1.7, "h": 0.07, "lines": 1, "align": "left", "style": "meta", "text": { "en": "", "zh": "" } },
-    { "id": "section.05", "bay": 5, "label": "SECTION 05 · 2–4 WORDS", "x": 12.35, "y": 2.28, "w": 1.7, "h": 0.18, "words": 4, "lines": 1, "align": "left", "style": "section", "text": { "en": "", "zh": "" } },
-    { "id": "object.05.name", "bay": 5, "label": "OBJECT 05 NAME · ≤4 WORDS", "x": 12.35, "y": 1.94, "w": 1.7, "h": 0.22, "words": 4, "lines": 1, "align": "left", "style": "object", "text": { "en": "", "zh": "" } },
-    { "id": "caption.05", "bay": 5, "label": "CAPTION 05 · 40–60 WORDS / ≤4 LINES", "x": 12.35, "y": 1.59, "w": 1.7, "h": 0.3, "words": 60, "lines": 4, "align": "left", "style": "caption", "text": { "en": "", "zh": "" } },
-    { "id": "meta.05", "bay": 5, "label": "DATE / MEDIUM / LENDER", "x": 12.35, "y": 1.44, "w": 1.7, "h": 0.07, "lines": 1, "align": "left", "style": "meta", "text": { "en": "", "zh": "" } },
-    { "id": "section.06", "bay": 6, "label": "SECTION 06 · 2–4 WORDS", "x": 14.35, "y": 2.28, "w": 1.7, "h": 0.18, "words": 4, "lines": 1, "align": "left", "style": "section", "text": { "en": "", "zh": "" } },
-    { "id": "object.06.name", "bay": 6, "label": "OBJECT 06 NAME · ≤4 WORDS", "x": 14.35, "y": 1.94, "w": 1.7, "h": 0.22, "words": 4, "lines": 1, "align": "left", "style": "object", "text": { "en": "", "zh": "" } },
-    { "id": "caption.06", "bay": 6, "label": "CAPTION 06 · 40–60 WORDS / ≤4 LINES", "x": 14.35, "y": 1.59, "w": 1.7, "h": 0.3, "words": 60, "lines": 4, "align": "left", "style": "caption", "text": { "en": "", "zh": "" } },
-    { "id": "meta.06", "bay": 6, "label": "DATE / MEDIUM / LENDER", "x": 14.35, "y": 1.44, "w": 1.7, "h": 0.07, "lines": 1, "align": "left", "style": "meta", "text": { "en": "", "zh": "" } },
-    { "id": "closing", "bay": 7, "label": "CLOSING · 30–50 WORDS", "x": 16.45, "y": 1.78, "w": 1.2, "h": 0.76, "words": 50, "lines": 5, "align": "left", "style": "body", "text": { "en": "", "zh": "" } },
-    { "id": "credits", "bay": 7, "label": "CREDITS / RIGHTS / ACCESSIBILITY · 2–3 LINES", "x": 16.45, "y": 0.34, "w": 1.2, "h": 0.32, "lines": 3, "align": "left", "style": "meta", "text": { "en": "", "zh": "" } }
+    {
+      "id": "title.zh",
+      "bay": 0,
+      "label": "TITLE ZH · ≤8 CHARS",
+      "x": 0.35,
+      "y": 1.65,
+      "w": 0.55,
+      "h": 1.15,
+      "chars": 8,
+      "lines": 8,
+      "align": "center",
+      "style": "verticalTitle",
+      "text": {
+        "en": "",
+        "zh": ""
+      }
+    },
+    {
+      "id": "title.en",
+      "bay": 0,
+      "label": "TITLE EN · ≤6 WORDS",
+      "x": 1.25,
+      "y": 2.25,
+      "w": 2.55,
+      "h": 0.4,
+      "words": 6,
+      "lines": 1,
+      "align": "left",
+      "style": "title",
+      "text": {
+        "en": "",
+        "zh": ""
+      }
+    },
+    {
+      "id": "subtitle",
+      "bay": 0,
+      "label": "SUBTITLE · ≤18 WORDS",
+      "x": 1.25,
+      "y": 1.98,
+      "w": 2.55,
+      "h": 0.18,
+      "words": 18,
+      "lines": 1,
+      "align": "left",
+      "style": "subtitle",
+      "text": {
+        "en": "",
+        "zh": ""
+      }
+    },
+    {
+      "id": "dates",
+      "bay": 0,
+      "label": "DATES · 1 LINE",
+      "x": 1.25,
+      "y": 1.76,
+      "w": 0.72,
+      "h": 0.13,
+      "lines": 1,
+      "align": "left",
+      "style": "meta",
+      "text": {
+        "en": "",
+        "zh": ""
+      }
+    },
+    {
+      "id": "organizer",
+      "bay": 0,
+      "label": "ORGANIZER · 1 LINE",
+      "x": 2.05,
+      "y": 1.76,
+      "w": 0.95,
+      "h": 0.13,
+      "lines": 1,
+      "align": "left",
+      "style": "meta",
+      "text": {
+        "en": "",
+        "zh": ""
+      }
+    },
+    {
+      "id": "curators",
+      "bay": 0,
+      "label": "CURATORS · 1 LINE",
+      "x": 3.08,
+      "y": 1.76,
+      "w": 0.72,
+      "h": 0.13,
+      "lines": 1,
+      "align": "left",
+      "style": "meta",
+      "text": {
+        "en": "",
+        "zh": ""
+      }
+    },
+    {
+      "id": "thesis",
+      "bay": 0,
+      "label": "THESIS · 80–120 WORDS / ≤6 LINES",
+      "x": 2.15,
+      "y": 0.34,
+      "w": 1.65,
+      "h": 0.92,
+      "words": 120,
+      "lines": 6,
+      "align": "left",
+      "style": "body",
+      "text": {
+        "en": "",
+        "zh": ""
+      }
+    },
+    {
+      "id": "rule",
+      "bay": 0,
+      "label": "RULE · STAYS / CHANGES · ≤30 WORDS",
+      "x": 0.35,
+      "y": 0.72,
+      "w": 1.5,
+      "h": 0.46,
+      "words": 30,
+      "lines": 2,
+      "align": "left",
+      "style": "body",
+      "text": {
+        "en": "",
+        "zh": ""
+      }
+    },
+    {
+      "id": "section.01",
+      "bay": 1,
+      "label": "SECTION 01 · 2–4 WORDS",
+      "x": 4.35,
+      "y": 2.28,
+      "w": 1.7,
+      "h": 0.18,
+      "words": 4,
+      "lines": 1,
+      "align": "left",
+      "style": "section",
+      "text": {
+        "en": "ORIGINS",
+        "zh": "起源"
+      }
+    },
+    {
+      "id": "object.01.name",
+      "bay": 1,
+      "label": "OBJECT 01 NAME · ≤4 WORDS",
+      "x": 4.35,
+      "y": 1.94,
+      "w": 1.7,
+      "h": 0.22,
+      "words": 4,
+      "lines": 1,
+      "align": "left",
+      "style": "object",
+      "text": {
+        "en": "Seven-Point Star Mirror",
+        "zh": "七角星纹铜镜"
+      }
+    },
+    {
+      "id": "caption.01",
+      "bay": 1,
+      "label": "CAPTION 01 · 40–60 WORDS / ≤4 LINES",
+      "x": 4.35,
+      "y": 1.59,
+      "w": 1.7,
+      "h": 0.3,
+      "words": 60,
+      "lines": 4,
+      "align": "left",
+      "style": "caption",
+      "text": {
+        "en": "Cast by the Qijia culture of the upper Yellow River, this small bronze disc is among the earliest mirrors known in China. Its back carries a seven-point star around a pierced knob, while one face was polished to hold a reflection. Such mirrors accompanied the dead, tying early metallurgy to beliefs about light and the soul.",
+        "zh": "此镜铸造于黄河上游的齐家文化时期，是中国已知最早的铜镜之一。镜背以穿孔镜钮为中心饰七角星纹，镜面则打磨光亮以照容。此类铜镜多随葬于墓中，将早期冶铸技术与古人关于光明、灵魂的信仰联系在一起。"
+      }
+    },
+    {
+      "id": "meta.01",
+      "bay": 1,
+      "label": "DATE / MEDIUM / LENDER",
+      "x": 4.35,
+      "y": 1.44,
+      "w": 1.7,
+      "h": 0.07,
+      "lines": 1,
+      "align": "left",
+      "style": "meta",
+      "text": {
+        "en": "c. 2000 BC · Bronze · Guinan, Qinghai",
+        "zh": "约公元前2000年 · 青铜 · 青海贵南"
+      }
+    },
+    {
+      "id": "section.02",
+      "bay": 2,
+      "label": "SECTION 02 · 2–4 WORDS",
+      "x": 6.35,
+      "y": 2.28,
+      "w": 1.7,
+      "h": 0.18,
+      "words": 4,
+      "lines": 1,
+      "align": "left",
+      "style": "section",
+      "text": {
+        "en": "COLLECTING",
+        "zh": "收藏"
+      }
+    },
+    {
+      "id": "object.02.name",
+      "bay": 2,
+      "label": "OBJECT 02 NAME · ≤4 WORDS",
+      "x": 6.35,
+      "y": 1.94,
+      "w": 1.7,
+      "h": 0.22,
+      "words": 4,
+      "lines": 1,
+      "align": "left",
+      "style": "object",
+      "text": {
+        "en": "Bronze Mirror, British Museum",
+        "zh": "大英博物馆藏铜镜"
+      }
+    },
+    {
+      "id": "caption.02",
+      "bay": 2,
+      "label": "CAPTION 02 · 40–60 WORDS / ≤4 LINES",
+      "x": 6.35,
+      "y": 1.59,
+      "w": 1.7,
+      "h": 0.3,
+      "words": 60,
+      "lines": 4,
+      "align": "left",
+      "style": "caption",
+      "text": {
+        "en": "From the British Museum collection, this bronze mirror keeps the two faces that define the type: a polished reflecting side and a cast, decorated back. Turn it slowly in the viewer to compare both, and to consider how a daily object also became a carrier of ornament and meaning far from home.",
+        "zh": "此镜来自大英博物馆收藏，保留了铜镜最典型的两面：打磨可鉴的镜面与铸有纹饰的镜背。请在观赏器中缓缓转动，比较两面之异，并思考一件日常之物如何承载纹饰与意义，又流转于万里之外。"
+      }
+    },
+    {
+      "id": "meta.02",
+      "bay": 2,
+      "label": "DATE / MEDIUM / LENDER",
+      "x": 6.35,
+      "y": 1.44,
+      "w": 1.7,
+      "h": 0.07,
+      "lines": 1,
+      "align": "left",
+      "style": "meta",
+      "text": {
+        "en": "China · Bronze · British Museum, 1990,0531.8",
+        "zh": "中国 · 青铜 · 大英博物馆 1990,0531.8"
+      }
+    },
+    {
+      "id": "section.03",
+      "bay": 3,
+      "label": "SECTION 03 · 2–4 WORDS",
+      "x": 8.35,
+      "y": 2.28,
+      "w": 1.7,
+      "h": 0.18,
+      "words": 4,
+      "lines": 1,
+      "align": "left",
+      "style": "section",
+      "text": {
+        "en": "COURT & MEMORY",
+        "zh": "宫廷与记忆"
+      }
+    },
+    {
+      "id": "object.03.name",
+      "bay": 3,
+      "label": "OBJECT 03 NAME · ≤4 WORDS",
+      "x": 8.35,
+      "y": 1.94,
+      "w": 1.7,
+      "h": 0.22,
+      "words": 4,
+      "lines": 1,
+      "align": "left",
+      "style": "object",
+      "text": {
+        "en": "Bronze Mirror, Palace Museum",
+        "zh": "故宫博物院藏铜镜"
+      }
+    },
+    {
+      "id": "caption.03",
+      "bay": 3,
+      "label": "CAPTION 03 · 40–60 WORDS / ≤4 LINES",
+      "x": 8.35,
+      "y": 1.59,
+      "w": 1.7,
+      "h": 0.3,
+      "words": 60,
+      "lines": 4,
+      "align": "left",
+      "style": "caption",
+      "text": {
+        "en": "Held by the Palace Museum, Beijing, this mirror belongs to a casting tradition that reached its technical height under the Han and Tang, when later workshops often quoted earlier motifs. Examine the relief on the back and the profile of the rim in the interactive viewer to read its making.",
+        "zh": "此镜由北京故宫博物院收藏。中国铸镜工艺在汉唐时期臻于高峰，后世工坊常摹古创新。请在交互观赏器中细看镜背浮雕与镜缘轮廓，从中读出其铸造的时代痕迹。"
+      }
+    },
+    {
+      "id": "meta.03",
+      "bay": 3,
+      "label": "DATE / MEDIUM / LENDER",
+      "x": 8.35,
+      "y": 1.44,
+      "w": 1.7,
+      "h": 0.07,
+      "lines": 1,
+      "align": "left",
+      "style": "meta",
+      "text": {
+        "en": "China · Bronze · The Palace Museum, Beijing",
+        "zh": "中国 · 青铜 · 北京故宫博物院"
+      }
+    },
+    {
+      "id": "section.04",
+      "bay": 4,
+      "label": "SECTION 04 · 2–4 WORDS",
+      "x": 10.35,
+      "y": 2.28,
+      "w": 1.7,
+      "h": 0.18,
+      "words": 4,
+      "lines": 1,
+      "align": "left",
+      "style": "section",
+      "text": {
+        "en": "NEW FORMS",
+        "zh": "新样"
+      }
+    },
+    {
+      "id": "object.04.name",
+      "bay": 4,
+      "label": "OBJECT 04 NAME · ≤4 WORDS",
+      "x": 10.35,
+      "y": 1.94,
+      "w": 1.7,
+      "h": 0.22,
+      "words": 4,
+      "lines": 1,
+      "align": "left",
+      "style": "object",
+      "text": {
+        "en": "Eight-Lobed Bronze Mirror",
+        "zh": "八瓣形铜镜"
+      }
+    },
+    {
+      "id": "caption.04",
+      "bay": 4,
+      "label": "CAPTION 04 · 40–60 WORDS / ≤4 LINES",
+      "x": 10.35,
+      "y": 1.59,
+      "w": 1.7,
+      "h": 0.3,
+      "words": 60,
+      "lines": 4,
+      "align": "left",
+      "style": "caption",
+      "text": {
+        "en": "By the Song dynasty, mirror makers explored silhouettes beyond the circle. This eight-lobed example breaks the disc into petals, showing how a thousand-year-old type was renewed for changing taste, when elegant outline often mattered more than dense decoration.",
+        "zh": "到了宋代，铸镜工匠在圆形之外探索出多样的轮廓。此镜作八瓣花形，将圆镜化为花瓣，显示延续千年的镜式如何随审美变迁而革新——彼时优雅的轮廓往往比繁密纹饰更为重要。"
+      }
+    },
+    {
+      "id": "meta.04",
+      "bay": 4,
+      "label": "DATE / MEDIUM / LENDER",
+      "x": 10.35,
+      "y": 1.44,
+      "w": 1.7,
+      "h": 0.07,
+      "lines": 1,
+      "align": "left",
+      "style": "meta",
+      "text": {
+        "en": "Song dynasty, 960–1279 · Bronze",
+        "zh": "宋代 960–1279 · 青铜"
+      }
+    },
+    {
+      "id": "section.05",
+      "bay": 5,
+      "label": "SECTION 05 · 2–4 WORDS",
+      "x": 12.35,
+      "y": 2.28,
+      "w": 1.7,
+      "h": 0.18,
+      "words": 4,
+      "lines": 1,
+      "align": "left",
+      "style": "section",
+      "text": {
+        "en": "SILK ROAD GOLD",
+        "zh": "丝路金辉"
+      }
+    },
+    {
+      "id": "object.05.name",
+      "bay": 5,
+      "label": "OBJECT 05 NAME · ≤4 WORDS",
+      "x": 12.35,
+      "y": 1.94,
+      "w": 1.7,
+      "h": 0.22,
+      "words": 4,
+      "lines": 1,
+      "align": "left",
+      "style": "object",
+      "text": {
+        "en": "Gold-Back Beast & Grape Mirror",
+        "zh": "金背瑞兽葡萄镜"
+      }
+    },
+    {
+      "id": "caption.05",
+      "bay": 5,
+      "label": "CAPTION 05 · 40–60 WORDS / ≤4 LINES",
+      "x": 12.35,
+      "y": 1.59,
+      "w": 1.7,
+      "h": 0.3,
+      "words": 60,
+      "lines": 4,
+      "align": "left",
+      "style": "caption",
+      "text": {
+        "en": "Excavated in 2002 from the Tang tomb of Yan Zhi and his wife at Majiagou, Baqiao, Xi'an, this eight-lobed mirror is a masterpiece of gold-backed casting. Its repoussé gold shell shows eight beasts among scrolling vines, grapes and birds spilling across the lobes — Central Asian motifs meeting Chinese craft on the Silk Road.",
+        "zh": "2002年出土于西安灞桥马家沟唐代阎智与夫人裴氏合葬墓。镜作八出菱花形，背贴锤揲金壳：内区八只瑞兽攀枝嬉戏，外区葡萄藤蔓与禽鸟过梁缠绕，是丝绸之路将西域葡萄纹与中原铸镜工艺融于一镜的巅峰之作。"
+      }
+    },
+    {
+      "id": "meta.05",
+      "bay": 5,
+      "label": "DATE / MEDIUM / LENDER",
+      "x": 12.35,
+      "y": 1.44,
+      "w": 1.7,
+      "h": 0.07,
+      "lines": 1,
+      "align": "left",
+      "style": "meta",
+      "text": {
+        "en": "Tang dynasty, 618–907 · Gold & bronze · Xi'an Museum",
+        "zh": "唐代 618–907 · 金背铜镜 · 西安博物院"
+      }
+    },
+    {
+      "id": "section.06",
+      "bay": 6,
+      "label": "SECTION 06 · 2–4 WORDS",
+      "x": 14.35,
+      "y": 2.28,
+      "w": 1.7,
+      "h": 0.18,
+      "words": 4,
+      "lines": 1,
+      "align": "left",
+      "style": "section",
+      "text": {
+        "en": "COSMIC ORDER",
+        "zh": "宇宙秩序"
+      }
+    },
+    {
+      "id": "object.06.name",
+      "bay": 6,
+      "label": "OBJECT 06 NAME · ≤4 WORDS",
+      "x": 14.35,
+      "y": 1.94,
+      "w": 1.7,
+      "h": 0.22,
+      "words": 4,
+      "lines": 1,
+      "align": "left",
+      "style": "object",
+      "text": {
+        "en": "TLV (Guiju) Mirror",
+        "zh": "规矩（博局）镜"
+      }
+    },
+    {
+      "id": "caption.06",
+      "bay": 6,
+      "label": "CAPTION 06 · 40–60 WORDS / ≤4 LINES",
+      "x": 14.35,
+      "y": 1.59,
+      "w": 1.7,
+      "h": 0.3,
+      "words": 60,
+      "lines": 4,
+      "align": "left",
+      "style": "caption",
+      "text": {
+        "en": "The type made famous by Wu Hung's reading of it as a cosmic diagram: the T, L and V marks trace the liubo game board and the square Bright Hall, while the four spirits — dragon, tiger, bird and tortoise-snake — guard the cardinal points around the central knob and its twelve nipples.",
+        "zh": "即巫鸿所释的“宇宙图式”之镜：T、L、V 纹对应博局与明堂方院，青龙、白虎、朱雀、玄武四神分守四方，环绕中央镜钮与十二乳钉，把天地秩序铸于镜背。"
+      }
+    },
+    {
+      "id": "meta.06",
+      "bay": 6,
+      "label": "DATE / MEDIUM / LENDER",
+      "x": 14.35,
+      "y": 1.44,
+      "w": 1.7,
+      "h": 0.07,
+      "lines": 1,
+      "align": "left",
+      "style": "meta",
+      "text": {
+        "en": "Han dynasty, 206 BCE–220 CE · Bronze · The Metropolitan Museum of Art",
+        "zh": "汉代 公元前206–公元220 · 青铜 · 大都会艺术博物馆"
+      }
+    },
+    {
+      "id": "closing",
+      "bay": 7,
+      "label": "CLOSING · 30–50 WORDS",
+      "x": 16.45,
+      "y": 1.78,
+      "w": 1.2,
+      "h": 0.76,
+      "words": 50,
+      "lines": 5,
+      "align": "left",
+      "style": "body",
+      "text": {
+        "en": "",
+        "zh": ""
+      }
+    },
+    {
+      "id": "credits",
+      "bay": 7,
+      "label": "CREDITS / RIGHTS / ACCESSIBILITY · 2–3 LINES",
+      "x": 16.45,
+      "y": 0.34,
+      "w": 1.2,
+      "h": 0.32,
+      "lines": 3,
+      "align": "left",
+      "style": "meta",
+      "text": {
+        "en": "",
+        "zh": ""
+      }
+    }
   ],
   "objects": [
-    { "id": "obj01", "bay": 1, "proxy": { "w": 0.18, "h": 0.25, "d": 0.12 } },
-    { "id": "obj02", "bay": 2, "proxy": { "w": 0.18, "h": 0.25, "d": 0.12 } },
-    { "id": "obj03", "bay": 3, "proxy": { "w": 0.18, "h": 0.25, "d": 0.12 } },
-    { "id": "obj04", "bay": 4, "proxy": { "w": 0.18, "h": 0.25, "d": 0.12 } },
-    { "id": "obj05", "bay": 5, "proxy": { "w": 0.18, "h": 0.25, "d": 0.12 } },
-    { "id": "obj06", "bay": 6, "proxy": { "w": 0.18, "h": 0.25, "d": 0.12 } }
+    {
+      "id": "obj01",
+      "bay": 1,
+      "proxy": {
+        "w": 0.18,
+        "h": 0.25,
+        "d": 0.12
+      },
+      "model": "./models/qijia-seven-point-mirror.glb"
+    },
+    {
+      "id": "obj02",
+      "bay": 2,
+      "proxy": {
+        "w": 0.18,
+        "h": 0.25,
+        "d": 0.12
+      },
+      "model": "./models/bm-mirror-1990-0531-8.glb"
+    },
+    {
+      "id": "obj03",
+      "bay": 3,
+      "proxy": {
+        "w": 0.18,
+        "h": 0.25,
+        "d": 0.12
+      },
+      "model": "./models/gugong-mirror.glb"
+    },
+    {
+      "id": "obj04",
+      "bay": 4,
+      "proxy": {
+        "w": 0.18,
+        "h": 0.25,
+        "d": 0.12
+      },
+      "model": "./models/song-eight-lobed-mirror.glb"
+    },
+    {
+      "id": "obj05",
+      "bay": 5,
+      "proxy": {
+        "w": 0.18,
+        "h": 0.25,
+        "d": 0.12
+      },
+      "model": "./models/jinbei-ruishou-putao-mirror.glb",
+      "rotationY": -90
+    },
+    {
+      "id": "obj06",
+      "bay": 6,
+      "proxy": {
+        "w": 0.18,
+        "h": 0.25,
+        "d": 0.12
+      },
+      "model": "./models/han-tlv-guiju-mirror.glb",
+      "rotationY": -90
+    }
   ],
   "tour": [
-    { "t": 0, "position": [0.8, 1.6, 2.8], "lookAt": [2, 1.9, 0] },
-    { "t": 8, "position": [1.6, 1.6, 2.8], "lookAt": [3.2, 1.7, 0] },
-    { "t": 16, "position": [5.2, 1.6, 2.8], "lookAt": [5.2, 1.4, 0] },
-    { "t": 30, "position": [7.2, 1.6, 2.8], "lookAt": [7.2, 1.4, 0] },
-    { "t": 44, "position": [9.2, 1.6, 2.8], "lookAt": [9.2, 1.4, 0] },
-    { "t": 58, "position": [11.2, 1.6, 2.8], "lookAt": [11.2, 1.4, 0] },
-    { "t": 72, "position": [13.2, 1.6, 2.8], "lookAt": [13.2, 1.4, 0] },
-    { "t": 84, "position": [15.2, 1.6, 2.8], "lookAt": [15.2, 1.4, 0] },
-    { "t": 90, "position": [17.2, 1.6, 2.8], "lookAt": [17.6, 1.3, 0] }
+    {
+      "t": 0,
+      "position": [
+        0.8,
+        1.6,
+        2.8
+      ],
+      "lookAt": [
+        2,
+        1.9,
+        0
+      ]
+    },
+    {
+      "t": 8,
+      "position": [
+        1.6,
+        1.6,
+        2.8
+      ],
+      "lookAt": [
+        3.2,
+        1.7,
+        0
+      ]
+    },
+    {
+      "t": 16,
+      "position": [
+        5.2,
+        1.6,
+        2.8
+      ],
+      "lookAt": [
+        5.2,
+        1.4,
+        0
+      ]
+    },
+    {
+      "t": 30,
+      "position": [
+        7.2,
+        1.6,
+        2.8
+      ],
+      "lookAt": [
+        7.2,
+        1.4,
+        0
+      ]
+    },
+    {
+      "t": 44,
+      "position": [
+        9.2,
+        1.6,
+        2.8
+      ],
+      "lookAt": [
+        9.2,
+        1.4,
+        0
+      ]
+    },
+    {
+      "t": 58,
+      "position": [
+        11.2,
+        1.6,
+        2.8
+      ],
+      "lookAt": [
+        11.2,
+        1.4,
+        0
+      ]
+    },
+    {
+      "t": 72,
+      "position": [
+        13.2,
+        1.6,
+        2.8
+      ],
+      "lookAt": [
+        13.2,
+        1.4,
+        0
+      ]
+    },
+    {
+      "t": 84,
+      "position": [
+        15.2,
+        1.6,
+        2.8
+      ],
+      "lookAt": [
+        15.2,
+        1.4,
+        0
+      ]
+    },
+    {
+      "t": 90,
+      "position": [
+        17.2,
+        1.6,
+        2.8
+      ],
+      "lookAt": [
+        17.6,
+        1.3,
+        0
+      ]
+    }
   ]
 }

@@ -10,6 +10,8 @@ interface SceneCallbacks {
   onSelect: (zoneId: string) => void
   onModeChange: (mode: ViewMode) => void
   onError: (message: string) => void
+  onObjectClick: (objectId: string) => void
+  onModelStatus: (bay: number, label: string | null) => void
 }
 
 interface TourSegment {
@@ -444,6 +446,7 @@ export class WallScene {
     this.scene.add(this.zoneGroup, this.objectGroup)
     this.rebuildZones()
     this.rebuildObjects()
+    void this.loadConfiguredModels()
     this.applyTour(0)
     this.bindEvents()
     this.resizeObserver = new ResizeObserver(() => this.resize())
@@ -718,6 +721,7 @@ export class WallScene {
     mesh.receiveShadow = true
     mesh.userData.objectId = object.id
     const group = new THREE.Group()
+    group.userData.objectId = object.id
     group.add(mesh)
     // small brass label plaque on the plinth front
     const plaque = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.05, 0.008), PROXY_PLAQUE_MATERIAL)
@@ -732,6 +736,7 @@ export class WallScene {
     document.addEventListener('pointerlockchange', this.onPointerLock)
     document.addEventListener('mousemove', this.onMouseMove)
     this.renderer.domElement.addEventListener('click', this.onClick)
+    this.renderer.domElement.addEventListener('pointermove', this.onHover)
   }
 
   private onKeyDown = (event: KeyboardEvent) => {
@@ -760,12 +765,37 @@ export class WallScene {
     const rect = this.renderer.domElement.getBoundingClientRect()
     this.pointer.set((event.clientX - rect.left) / rect.width * 2 - 1, -(event.clientY - rect.top) / rect.height * 2 + 1)
     this.raycaster.setFromCamera(this.pointer, this.camera)
-    const hit = this.raycaster.intersectObjects(this.zoneGroup.children, false)[0]
-    if (hit?.object.userData.zoneId) {
-      this.selectedId = hit.object.userData.zoneId
-      this.rebuildZones()
-      this.callbacks.onSelect(this.selectedId)
+    const hits = this.raycaster.intersectObjects([...this.objectGroup.children, ...this.zoneGroup.children], true)
+    for (const hit of hits) {
+      let node: THREE.Object3D | null = hit.object
+      let objectId = ''
+      while (node && node !== this.objectGroup && node !== this.zoneGroup) {
+        if (node.userData.objectId) { objectId = node.userData.objectId; break }
+        node = node.parent
+      }
+      if (objectId) { this.callbacks.onObjectClick(objectId); return }
+      if (hit.object.userData.zoneId) {
+        this.selectedId = hit.object.userData.zoneId
+        this.rebuildZones()
+        this.callbacks.onSelect(this.selectedId)
+        return
+      }
     }
+  }
+
+  private onHover = (event: PointerEvent) => {
+    if (this.mode === 'walk' && document.pointerLockElement === this.renderer.domElement) return
+    const rect = this.renderer.domElement.getBoundingClientRect()
+    this.pointer.set((event.clientX - rect.left) / rect.width * 2 - 1, -(event.clientY - rect.top) / rect.height * 2 + 1)
+    this.raycaster.setFromCamera(this.pointer, this.camera)
+    const hit = this.raycaster.intersectObjects([...this.objectGroup.children, ...this.zoneGroup.children], true)[0]
+    let node: THREE.Object3D | null = hit?.object ?? null
+    let interactive = false
+    while (node && node !== this.objectGroup && node !== this.zoneGroup) {
+      if (node.userData.objectId || node.userData.zoneId) { interactive = true; break }
+      node = node.parent
+    }
+    this.renderer.domElement.style.cursor = interactive ? 'pointer' : ''
   }
 
   private resize() {
@@ -904,12 +934,14 @@ export class WallScene {
   selectZone(id: string) { this.selectedId = id; this.rebuildZones() }
   updateConfig(config: WallConfig) { this.config = config; this.rebuildZones(); this.rebuildObjects() }
 
-  async importGlb(bay: number, file: File) {
-    if (!file.name.toLowerCase().endsWith('.glb')) throw new Error('Please choose a binary .glb model.')
-    if (file.size > 50 * 1024 * 1024) throw new Error('Please use a GLB smaller than 50 MB.')
-    const buffer = await file.arrayBuffer()
-    const gltf = await new GLTFLoader().parseAsync(buffer, '')
-    const source = gltf.scene
+  /** Center a loaded GLB on the plinth of the given bay, fitted to a 0.25 m maximum dimension. */
+  private wrapModel(source: THREE.Object3D, bay: number, objectId: string, rotationY = 0) {
+    if (rotationY) {
+      const pivot = new THREE.Group()
+      source.rotation.y = THREE.MathUtils.degToRad(rotationY)
+      pivot.add(source)
+      source = pivot
+    }
     source.updateMatrixWorld(true)
     const box = new THREE.Box3().setFromObject(source)
     if (box.isEmpty()) throw new Error('The GLB does not contain visible geometry.')
@@ -921,17 +953,64 @@ export class WallScene {
     source.position.set(-center.x * scale, -box.min.y * scale, -center.z * scale)
     wrapper.add(source)
     wrapper.position.set(4.2 + (bay - 0.5) * 2, 0.985, 0.29)
+    wrapper.userData.objectId = objectId
+    wrapper.userData.bay = bay
     wrapper.traverse(child => {
+      child.userData.objectId = child.userData.objectId ?? objectId
       if (child instanceof THREE.Mesh) { child.castShadow = true; child.receiveShadow = true }
     })
+    return wrapper
+  }
+
+  private disposeModel(bay: number) {
     this.models.get(bay)?.traverse(child => {
-      if (child instanceof THREE.Mesh) child.geometry.dispose()
+      if (child instanceof THREE.Mesh) {
+        child.geometry.dispose()
+        const materials = Array.isArray(child.material) ? child.material : [child.material]
+        for (const material of materials) {
+          for (const value of Object.values(material)) {
+            if (value instanceof THREE.Texture) value.dispose()
+          }
+          material.dispose()
+        }
+      }
     })
-    this.models.set(bay, wrapper)
+    this.models.delete(bay)
+  }
+
+  /** Load the GLB models configured in wall.json into their display cases. */
+  private async loadConfiguredModels() {
+    const loader = new GLTFLoader()
+    for (const object of this.config.objects) {
+      if (!object.model || this.models.has(object.bay)) continue
+      try {
+        const gltf = await loader.loadAsync(object.model)
+        this.models.set(object.bay, this.wrapModel(gltf.scene, object.bay, object.id, object.rotationY ?? 0))
+        this.callbacks.onModelStatus(object.bay, object.model.split('/').pop() ?? object.model)
+      } catch {
+        this.callbacks.onError(`Could not load model for B${object.bay} — placeholder kept.`)
+      }
+      this.rebuildObjects()
+    }
+  }
+
+  async importGlb(bay: number, file: File) {
+    if (!file.name.toLowerCase().endsWith('.glb')) throw new Error('Please choose a binary .glb model.')
+    if (file.size > 50 * 1024 * 1024) throw new Error('Please use a GLB smaller than 50 MB.')
+    const buffer = await file.arrayBuffer()
+    const gltf = await new GLTFLoader().parseAsync(buffer, '')
+    const objectId = this.config.objects.find(object => object.bay === bay)?.id ?? `bay-${bay}`
+    this.disposeModel(bay)
+    this.models.set(bay, this.wrapModel(gltf.scene, bay, objectId))
+    this.callbacks.onModelStatus(bay, file.name)
     this.rebuildObjects()
   }
 
-  resetModel(bay: number) { this.models.delete(bay); this.rebuildObjects() }
+  resetModel(bay: number) {
+    this.disposeModel(bay)
+    this.callbacks.onModelStatus(bay, null)
+    this.rebuildObjects()
+  }
 
   capture() {
     this.renderer.render(this.scene, this.camera)
@@ -950,6 +1029,7 @@ export class WallScene {
     document.removeEventListener('pointerlockchange', this.onPointerLock)
     document.removeEventListener('mousemove', this.onMouseMove)
     this.renderer.domElement.removeEventListener('click', this.onClick)
+    this.renderer.domElement.removeEventListener('pointermove', this.onHover)
     if (document.pointerLockElement) document.exitPointerLock()
     this.renderer.dispose()
     this.renderer.domElement.remove()

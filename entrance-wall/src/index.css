@@ -117,6 +117,31 @@ button { cursor: pointer; }
 .toast { position: absolute; z-index: 80; left: 50%; top: 96px; transform: translateX(-50%); display: flex; align-items: center; gap: 9px; max-width: calc(100% - 40px); padding: 11px 15px; background: rgba(30,34,27,.96); border: 1px solid rgba(137,158,119,.4); box-shadow: 0 10px 35px #0008; color: #d5dfca; font-size: 11px; animation: toast-in .2s ease-out; }.toast.error { color: #e4bda6; border-color: rgba(190,120,85,.5); }.toast svg { flex-shrink: 0; }
 @keyframes toast-in { from { opacity: 0; transform: translate(-50%, -8px); } }
 
+.artifact-modal { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(280px, 0.9fr); width: min(1120px, 96vw); max-height: 92vh; background: #1b1d18; border: 1px solid rgba(176,139,82,.35); box-shadow: 0 25px 100px #000; outline: none; }
+.artifact-stage { position: relative; min-height: 420px; height: min(72vh, 640px); }
+.artifact-viewer { position: absolute; inset: 0; }
+.artifact-canvas { display: block; width: 100%; height: 100%; }
+.artifact-status { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; color: #b7ac96; font-size: 11px; letter-spacing: .06em; pointer-events: none; }
+.artifact-status.error { color: #d8a08a; }
+.artifact-status .spin { animation: artifact-spin 1s linear infinite; }
+@keyframes artifact-spin { to { transform: rotate(360deg); } }
+.artifact-toolbar { position: absolute; left: 50%; bottom: 14px; transform: translateX(-50%); display: flex; align-items: center; gap: 6px; padding: 6px; background: rgba(16,18,14,.82); border: 1px solid rgba(176,139,82,.3); backdrop-filter: blur(6px); }
+.artifact-toolbar .icon-button.active { color: #d3b078; border-color: rgba(176,139,82,.6); }
+.toolbar-hint { display: flex; align-items: center; gap: 6px; margin: 0 8px 0 4px; color: #8d8a7e; font: 500 8px monospace; letter-spacing: .12em; white-space: nowrap; }
+.artifact-info { display: flex; flex-direction: column; min-height: 0; padding-bottom: 20px; border-left: 1px solid rgba(242,235,221,.08); }
+.artifact-info .editor-header { padding: 20px 20px 0; }
+.artifact-info h2 { font-size: 20px; line-height: 1.25; color: #efe7d6; }
+.artifact-meta { margin: 14px 20px 0; padding-top: 12px; border-top: 1px solid rgba(176,139,82,.3); color: #bfa16f; font: 500 9px monospace; letter-spacing: .1em; text-transform: uppercase; }
+.artifact-caption { margin: 14px 20px 0; color: #b7b1a3; font-size: 11.5px; line-height: 1.75; overflow-y: auto; }
+.artifact-note { margin: auto 20px 0; padding-top: 18px; color: #7e7b70; font-size: 9.5px; line-height: 1.6; }
+@media (max-width: 860px) {
+  .artifact-modal { grid-template-columns: 1fr; overflow-y: auto; }
+  .artifact-stage { height: 54vh; min-height: 320px; }
+  .artifact-info { border-left: none; border-top: 1px solid rgba(242,235,221,.08); }
+  .artifact-caption { overflow: visible; }
+  .toolbar-hint { display: none; }
+}
+
 .presentation-mode .vignette { opacity: .8; }
 @media (max-width: 1100px) { .project-facts { display: none; }.top-bar { gap: 15px; }.text-button span { display: none; }.text-button { padding: 8px; } }
 @media (max-width: 720px) {

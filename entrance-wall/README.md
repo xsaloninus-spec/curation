@@ -10,6 +10,8 @@ An interactive 3D museum entrance wall for the HIST2012 mini-curation project: 1
 - **Guided tour** — an 8-station, 90 s camera tour with dwell and transition segments, adjustable speed and a reduced-motion mode.
 - **Free exploration** — click the scene and use `W A S D` + mouse look to walk the gallery.
 - **Curation editor** — edit every text zone (EN / 中文), import / export `wall.json`, validate against the built-in rules, and import real GLB artefacts into any of the six object bays (proxies are used until a model is placed).
+- **Built-in artefacts** — four scanned bronze mirrors (Qijia, British Museum, Palace Museum, Song eight-lobed) ship with the app and load into bays B1–B4 automatically.
+- **360° artifact viewer** — click any artefact in its display case to open a focused viewer: drag / arrow keys to rotate a full 360°, scroll or pinch to zoom, auto-rotation that pauses while you interact, one-click reset, plus the object's label, metadata and caption beside the model.
 - **Offline & private** — JSON and GLB imports stay on the device; no analytics or network calls.
 
 ## Controls
@@ -19,6 +21,7 @@ An interactive 3D museum entrance wall for the HIST2012 mini-curation project: 1
 | `Space` | Pause / continue tour |
 | `W A S D` | Enter free walk and move |
 | Mouse | Look around in free walk |
+| Click artefact | Open the 360° artifact viewer (drag / scroll / arrows) |
 | `R` | Return to the title bay (B0) |
 | `P` | Show / hide field labels |
 | `L` | Switch English / 中文 |

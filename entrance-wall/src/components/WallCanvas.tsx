@@ -13,6 +13,8 @@ interface Props {
   onSelect: (zoneId: string) => void
   onModeChange: (mode: ViewMode) => void
   onError: (message: string) => void
+  onObjectClick: (objectId: string) => void
+  onModelStatus: (bay: number, label: string | null) => void
 }
 
 export function WallCanvas(props: Props) {
@@ -28,6 +30,8 @@ export function WallCanvas(props: Props) {
       onSelect: id => latest.current.onSelect(id),
       onModeChange: mode => latest.current.onModeChange(mode),
       onError: message => latest.current.onError(message),
+      onObjectClick: id => latest.current.onObjectClick(id),
+      onModelStatus: (bay, label) => latest.current.onModelStatus(bay, label),
     })
     latest.current.onReady(scene)
     return () => {

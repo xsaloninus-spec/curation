@@ -27,6 +27,10 @@ export interface WallObject {
   id: string
   bay: number
   proxy: { w: number; h: number; d: number }
+  /** Optional built-in GLB (relative URL) shown in this bay's display case. */
+  model?: string
+  /** Optional Y rotation in degrees applied to the model before fitting (fixes off-axis exports). */
+  rotationY?: number
 }
 
 export interface TourFrame {

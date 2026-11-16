@@ -5,6 +5,7 @@ import { EditorPanel } from '@/components/EditorPanel'
 import { TourControls } from '@/components/TourControls'
 import { WallNavigation } from '@/components/WallNavigation'
 import { DocsPanel } from '@/components/DocsPanel'
+import { ArtifactDialog } from '@/components/ArtifactDialog'
 import { WallScene } from '@/scene/WallScene'
 import { downloadJson, validateWall } from '@/lib/validation'
 import defaultWallJson from '@/data/wall.json'
@@ -30,8 +31,11 @@ export default function App() {
   const [uiHidden, setUiHidden] = useState(() => new URLSearchParams(window.location.search).get('tour') === '1')
   const [toast, setToast] = useState<{ type: 'success' | 'error'; message: string } | null>(null)
   const [modelNames, setModelNames] = useState<Record<number, string>>({})
+  const [artifactId, setArtifactId] = useState('')
+  const wasPlayingRef = useRef(false)
   const sceneRef = useRef<WallScene | null>(null)
   const issues = validateWall(config, language)
+  const artifact = config.objects.find(object => object.id === artifactId) ?? null
 
   const notify = useCallback((message: string, type: 'success' | 'error' = 'success') => {
     setToast({ message, type })
@@ -73,6 +77,10 @@ export default function App() {
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
       if ((event.target as HTMLElement)?.matches('input, textarea, select, [contenteditable="true"]')) return
+      if (artifactId) {
+        if (event.code === 'Escape') setArtifactId('')
+        return
+      }
       if (event.code === 'Space') {
         event.preventDefault()
         sceneRef.current?.setPlaying(!snapshot.playing)
@@ -89,7 +97,7 @@ export default function App() {
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [reset, snapshot.playing])
+  }, [reset, snapshot.playing, artifactId])
 
   const importConfig = async (file: File) => {
     try {
@@ -117,6 +125,29 @@ export default function App() {
     if (!uiHidden) setEditorOpen(true)
   }
 
+  const openArtifact = useCallback((id: string) => {
+    const target = config.objects.find(object => object.id === id)
+    if (!target) return
+    wasPlayingRef.current = snapshot.playing
+    sceneRef.current?.setPlaying(false)
+    if (document.pointerLockElement) document.exitPointerLock()
+    setArtifactId(id)
+  }, [config.objects, snapshot.playing])
+
+  const closeArtifact = useCallback(() => {
+    setArtifactId('')
+    if (wasPlayingRef.current) sceneRef.current?.setPlaying(true)
+  }, [])
+
+  const handleModelStatus = useCallback((bay: number, label: string | null) => {
+    setModelNames(names => {
+      const next = { ...names }
+      if (label) next[bay] = label
+      else delete next[bay]
+      return next
+    })
+  }, [])
+
   return (
     <main className={`app-shell ${uiHidden ? 'presentation-mode' : ''}`}>
       <WallCanvas
@@ -130,6 +161,8 @@ export default function App() {
         onSelect={selectZone}
         onModeChange={setMode}
         onError={message => notify(message, 'error')}
+        onObjectClick={openArtifact}
+        onModelStatus={handleModelStatus}
       />
       <div className="vignette" />
       <div className="grain" />
@@ -196,11 +229,12 @@ export default function App() {
         }}
       />}
       {docsOpen && <DocsPanel onClose={() => setDocsOpen(false)} />}
+      {artifact && <ArtifactDialog object={artifact} config={config} language={language} onClose={closeArtifact} />}
       {helpOpen && <div className="modal-backdrop" onMouseDown={event => { if (event.target === event.currentTarget) setHelpOpen(false) }}>
         <section className="help-modal">
           <div className="editor-header"><div><span className="eyebrow">VISITOR CONTROLS</span><h2>Explore the wall</h2></div><button className="icon-button" onClick={() => setHelpOpen(false)}><X size={18} /></button></div>
           <div className="shortcut-grid">
-            {[['Space', 'Pause / continue tour'], ['W A S D', 'Enter free walk and move'], ['Mouse', 'Look around in free walk'], ['R', 'Return to B0'], ['P', 'Show / hide field labels'], ['L', 'Switch English / Chinese'], ['F', 'Toggle fullscreen'], ['Esc', 'Release cursor / close panel']].map(([key, label]) => <div key={key}><kbd>{key}</kbd><span>{label}</span></div>)}
+            {[['Space', 'Pause / continue tour'], ['W A S D', 'Enter free walk and move'], ['Mouse', 'Look around in free walk'], ['Click object', 'Open 360° artifact viewer'], ['R', 'Return to B0'], ['P', 'Show / hide field labels'], ['L', 'Switch English / Chinese'], ['F', 'Toggle fullscreen'], ['Esc', 'Release cursor / close panel']].map(([key, label]) => <div key={key}><kbd>{key}</kbd><span>{label}</span></div>)}
           </div>
           <label className="setting-row"><div><b>Reduce camera motion</b><span>Stop at B7 instead of looping the tour.</span></div><input type="checkbox" checked={reducedMotion} onChange={event => setReducedMotion(event.target.checked)} /></label>
           <div className="help-note"><b>Offline & private</b><p>The production HTML contains all code and default data. JSON and GLB imports stay on this device. No external images, fonts, analytics, or CDN are used.</p></div>
