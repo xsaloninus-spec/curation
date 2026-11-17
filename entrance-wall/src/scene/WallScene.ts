@@ -390,6 +390,8 @@ export class WallScene {
   private zoneGroup = new THREE.Group()
   private objectGroup = new THREE.Group()
   private models = new Map<number, THREE.Group>()
+  private suppressedBays = new Set<number>()
+  private loadingBays = new Set<number>()
   private resizeObserver: ResizeObserver
   private animationId = 0
   private lastFrame = performance.now()
@@ -932,10 +934,26 @@ export class WallScene {
   }
 
   selectZone(id: string) { this.selectedId = id; this.rebuildZones() }
-  updateConfig(config: WallConfig) { this.config = config; this.rebuildZones(); this.rebuildObjects() }
+  updateConfig(config: WallConfig) {
+    // Re-place models whose configured source or rotation changed; custom imports stay untouched.
+    for (const object of config.objects) {
+      const cached = this.models.get(object.bay)
+      if (!cached || cached.userData.customImport) continue
+      const sameModel = (cached.userData.modelUrl ?? null) === (object.model ?? null)
+      const sameRotation = (cached.userData.rotationY ?? 0) === (object.rotationY ?? 0)
+      if (!sameModel || !sameRotation) {
+        this.disposeModel(object.bay)
+        this.suppressedBays.delete(object.bay)
+      }
+    }
+    this.config = config
+    this.rebuildZones()
+    this.rebuildObjects()
+    void this.loadConfiguredModels()
+  }
 
   /** Center a loaded GLB on the plinth of the given bay, fitted to a 0.25 m maximum dimension. */
-  private wrapModel(source: THREE.Object3D, bay: number, objectId: string, rotationY = 0) {
+  private wrapModel(source: THREE.Object3D, bay: number, objectId: string, rotationY = 0, modelUrl: string | null = null) {
     if (rotationY) {
       const pivot = new THREE.Group()
       source.rotation.y = THREE.MathUtils.degToRad(rotationY)
@@ -955,6 +973,8 @@ export class WallScene {
     wrapper.position.set(4.2 + (bay - 0.5) * 2, 0.985, 0.29)
     wrapper.userData.objectId = objectId
     wrapper.userData.bay = bay
+    wrapper.userData.rotationY = rotationY
+    wrapper.userData.modelUrl = modelUrl
     wrapper.traverse(child => {
       child.userData.objectId = child.userData.objectId ?? objectId
       if (child instanceof THREE.Mesh) { child.castShadow = true; child.receiveShadow = true }
@@ -981,17 +1001,27 @@ export class WallScene {
   /** Load the GLB models configured in wall.json into their display cases. */
   private async loadConfiguredModels() {
     const loader = new GLTFLoader()
+    let stale = false
     for (const object of this.config.objects) {
-      if (!object.model || this.models.has(object.bay)) continue
+      if (!object.model || this.models.has(object.bay) || this.suppressedBays.has(object.bay) || this.loadingBays.has(object.bay)) continue
+      this.loadingBays.add(object.bay)
       try {
         const gltf = await loader.loadAsync(object.model)
-        this.models.set(object.bay, this.wrapModel(gltf.scene, object.bay, object.id, object.rotationY ?? 0))
-        this.callbacks.onModelStatus(object.bay, object.model.split('/').pop() ?? object.model)
+        // The config may have changed while the GLB was downloading; only place the model if it is still current.
+        const current = this.config.objects.find(entry => entry.bay === object.bay)
+        if (current && current.model === object.model && (current.rotationY ?? 0) === (object.rotationY ?? 0)) {
+          this.models.set(object.bay, this.wrapModel(gltf.scene, object.bay, object.id, object.rotationY ?? 0, object.model))
+          this.callbacks.onModelStatus(object.bay, object.model.split('/').pop() ?? object.model)
+        } else {
+          stale = true
+        }
       } catch {
         this.callbacks.onError(`Could not load model for B${object.bay} — placeholder kept.`)
       }
+      this.loadingBays.delete(object.bay)
       this.rebuildObjects()
     }
+    if (stale) void this.loadConfiguredModels()
   }
 
   async importGlb(bay: number, file: File) {
@@ -1000,14 +1030,19 @@ export class WallScene {
     const buffer = await file.arrayBuffer()
     const gltf = await new GLTFLoader().parseAsync(buffer, '')
     const objectId = this.config.objects.find(object => object.bay === bay)?.id ?? `bay-${bay}`
+    const rotationY = this.config.objects.find(object => object.bay === bay)?.rotationY ?? 0
     this.disposeModel(bay)
-    this.models.set(bay, this.wrapModel(gltf.scene, bay, objectId))
+    const wrapper = this.wrapModel(gltf.scene, bay, objectId, rotationY)
+    wrapper.userData.customImport = true
+    this.suppressedBays.delete(bay)
+    this.models.set(bay, wrapper)
     this.callbacks.onModelStatus(bay, file.name)
     this.rebuildObjects()
   }
 
   resetModel(bay: number) {
     this.disposeModel(bay)
+    this.suppressedBays.add(bay)
     this.callbacks.onModelStatus(bay, null)
     this.rebuildObjects()
   }
