@@ -21,7 +21,7 @@ root.matrix_world = rot
 # 只导出网格（不含相机灯光）
 bpy.ops.object.select_all(action='DESELECT')
 for o in bpy.context.scene.objects:
-    if o.type == 'MESH' or o.type == 'EMPTY':
+    if o.type in ('MESH', 'EMPTY', 'CURVE'):
         o.select_set(True)
 
 bpy.ops.export_scene.gltf(

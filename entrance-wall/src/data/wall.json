@@ -209,6 +209,73 @@
       }
     },
     {
+      "id": "section.02",
+      "bay": 2,
+      "label": "SECTION 02 · 2–4 WORDS",
+      "x": 6.35,
+      "y": 2.28,
+      "w": 1.7,
+      "h": 0.18,
+      "align": "left",
+      "style": "section",
+      "text": {
+        "en": "OPENWORK",
+        "zh": "透雕"
+      },
+      "words": 4,
+      "lines": 1
+    },
+    {
+      "id": "object.02.name",
+      "bay": 2,
+      "label": "OBJECT 02 NAME · ≤4 WORDS",
+      "x": 6.35,
+      "y": 1.94,
+      "w": 1.7,
+      "h": 0.22,
+      "align": "left",
+      "style": "object",
+      "text": {
+        "en": "Openwork Dragon Mirror",
+        "zh": "蟠螭纹透雕镜"
+      },
+      "words": 4,
+      "lines": 1
+    },
+    {
+      "id": "caption.02",
+      "bay": 2,
+      "label": "CAPTION 02 · 40–60 WORDS / ≤4 LINES",
+      "x": 6.35,
+      "y": 1.59,
+      "w": 1.7,
+      "h": 0.3,
+      "align": "left",
+      "style": "caption",
+      "text": {
+        "en": "From the Metropolitan Museum, this small mirror is built in two layers: a Warring States openwork plaque of interlaced dragons, confirmed as period, set before a plain backing plate the museum notes may be a later replacement. Both layers are modelled separately in the viewer.",
+        "zh": "此镜藏于大都会艺术博物馆，为双层结构：战国时期蟠螭纹透雕饰片（馆方确认为原物）置于素面镜体之前，而后方镜体可能为后世配补。观赏器已将两层分离建模，可转动细看。"
+      },
+      "words": 60,
+      "lines": 4
+    },
+    {
+      "id": "meta.02",
+      "bay": 2,
+      "label": "DATE / MEDIUM / LENDER",
+      "x": 6.35,
+      "y": 1.44,
+      "w": 1.7,
+      "h": 0.07,
+      "align": "left",
+      "style": "meta",
+      "text": {
+        "en": "China · Warring States (openwork) · Bronze · The Metropolitan Museum of Art, 23.120.5",
+        "zh": "中国 · 战国（透雕层） · 青铜 · 大都会艺术博物馆 23.120.5"
+      },
+      "lines": 1
+    },
+    {
       "id": "section.03",
       "bay": 3,
       "label": "SECTION 06 · 2–4 WORDS",
@@ -372,8 +439,8 @@
       "align": "left",
       "style": "object",
       "text": {
-        "en": "Bronze Mirror, British Museum",
-        "zh": "大英博物馆藏铜镜"
+        "en": "Deity and Deer Mirror",
+        "zh": "仙人骑鹿镜"
       }
     },
     {
@@ -389,8 +456,8 @@
       "align": "left",
       "style": "caption",
       "text": {
-        "en": "From the British Museum collection, this bronze mirror keeps the two faces that define the type: a polished reflecting side and a cast, decorated back. Turn it slowly in the viewer to compare both, and to consider how a daily object also became a carrier of ornament and meaning far from home.",
-        "zh": "此镜来自大英博物馆收藏，保留了铜镜最典型的两面：打磨可鉴的镜面与铸有纹饰的镜背。请在观赏器中缓缓转动，比较两面之异，并思考一件日常之物如何承载纹饰与意义，又流转于万里之外。"
+        "en": "From the British Museum collection, this Song-dynasty bronze mirror is cast with a deity mounted on a deer amid clouds and waves, a long handle extending from the rim so it could be held or hung. Turn it in the viewer to follow the rider across the lively, crowded ground of the back.",
+        "zh": "此镜为大英博物馆藏宋代铜镜，镜背铸仙人骑鹿、云气涌动，镜缘伸出长柄，可执可悬。请在观赏器中缓缓转动，跟随骑鹿仙人穿行于繁密生动的纹饰之间。"
       }
     },
     {
@@ -405,8 +472,8 @@
       "align": "left",
       "style": "meta",
       "text": {
-        "en": "China · Bronze · British Museum, 1990,0531.8",
-        "zh": "中国 · 青铜 · 大英博物馆 1990,0531.8"
+        "en": "China · Song dynasty · Bronze · British Museum, 1990,0531.8",
+        "zh": "中国 · 宋代 · 青铜 · 大英博物馆 1990,0531.8"
       }
     },
     {
@@ -439,8 +506,8 @@
       "align": "left",
       "style": "object",
       "text": {
-        "en": "Bronze Mirror, Palace Museum",
-        "zh": "故宫博物院藏铜镜"
+        "en": "Blue Enamel Hand Mirror",
+        "zh": "蓝珐琅喜字把镜"
       }
     },
     {
@@ -456,8 +523,8 @@
       "align": "left",
       "style": "caption",
       "text": {
-        "en": "Held by the Palace Museum, Beijing, this mirror belongs to a casting tradition that reached its technical height under the Han and Tang, when later workshops often quoted earlier motifs. Examine the relief on the back and the profile of the rim in the interactive viewer to read its making.",
-        "zh": "此镜由北京故宫博物院收藏。中国铸镜工艺在汉唐时期臻于高峰，后世工坊常摹古创新。请在交互观赏器中细看镜背浮雕与镜缘轮廓，从中读出其铸造的时代痕迹。"
+        "en": "A late-Qing hand mirror from the Palace Museum: a bronze disc covered in translucent cobalt-blue enamel, painted with gilt double-happiness characters and the Eight Treasures, set on a matching enamelled handle. Hold it in the viewer as it was once held in the hand.",
+        "zh": "此镜为北京故宫博物院藏清晚期把镜：铜胎施透明蓝珐琅，描金双喜字与八宝纹，下接同饰珐琅长柄。请在观赏器中拿起它，如百年前一样对镜执照。"
       }
     },
     {
@@ -472,8 +539,8 @@
       "align": "left",
       "style": "meta",
       "text": {
-        "en": "China · Bronze · The Palace Museum, Beijing",
-        "zh": "中国 · 青铜 · 北京故宫博物院"
+        "en": "China · Late Qing dynasty · Enamel on bronze · The Palace Museum, Beijing, 00180346",
+        "zh": "中国 · 清晚期 · 铜胎珐琅 · 北京故宫博物院 故00180346"
       }
     },
     {
@@ -551,7 +618,8 @@
         "h": 0.25,
         "d": 0.12
       },
-      "model": "./models/bm-mirror-1990-0531-8.glb"
+      "model": "./models/bm-mirror-1990-0531-8.glb",
+      "rotationY": 90
     },
     {
       "id": "obj03",
@@ -561,7 +629,18 @@
         "h": 0.25,
         "d": 0.12
       },
-      "model": "./models/gugong-mirror.glb"
+      "model": "./models/dpm-xizi-enamel-handmirror.glb"
+    },
+    {
+      "id": "obj07",
+      "bay": 2,
+      "proxy": {
+        "w": 0.18,
+        "h": 0.25,
+        "d": 0.12
+      },
+      "model": "./models/met-interlaced-dragons-mirror.glb",
+      "rotationY": -90
     }
   ],
   "tour": [
