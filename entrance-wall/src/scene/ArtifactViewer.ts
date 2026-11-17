@@ -14,16 +14,41 @@ interface ArtifactViewerOptions {
 const HOME_POSITION = new THREE.Vector3(1.45, 0.85, 2.1)
 const HOME_TARGET = new THREE.Vector3(0, 0.02, 0)
 const clamp = THREE.MathUtils.clamp
-/** Soft radial dark gradient used to ground the object. */
+const VIEWER_PAPER = '#eeece9'
+
+/** Light paper backdrop with a whisper of fiber texture. */
+function makeBackdropTexture() {
+  const size = 512
+  const canvas = document.createElement('canvas')
+  canvas.width = canvas.height = size
+  const context = canvas.getContext('2d')!
+  let seed = 97
+  const random = () => {
+    seed = (seed * 16807) % 2147483647
+    return (seed - 1) / 2147483646
+  }
+  context.fillStyle = VIEWER_PAPER
+  context.fillRect(0, 0, size, size)
+  for (let i = 0; i < 1400; i += 1) {
+    const light = random() > 0.5
+    context.fillStyle = light ? `rgba(255,255,255,${0.02 + random() * 0.03})` : `rgba(120,118,115,${0.015 + random() * 0.025})`
+    const dot = 0.6 + random() * 1.6
+    context.fillRect(random() * size, random() * size, dot, dot)
+  }
+  const texture = new THREE.CanvasTexture(canvas)
+  texture.colorSpace = THREE.SRGBColorSpace
+  return texture
+}
+/** Soft radial gradient used to ground the object. */
 function makeGroundTexture() {
   const size = 512
   const canvas = document.createElement('canvas')
   canvas.width = canvas.height = size
   const context = canvas.getContext('2d')!
   const gradient = context.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2)
-  gradient.addColorStop(0, 'rgba(0,0,0,0.55)')
-  gradient.addColorStop(0.55, 'rgba(0,0,0,0.28)')
-  gradient.addColorStop(1, 'rgba(0,0,0,0)')
+  gradient.addColorStop(0, 'rgba(60,60,60,0.38)')
+  gradient.addColorStop(0.55, 'rgba(60,60,60,0.2)')
+  gradient.addColorStop(1, 'rgba(60,60,60,0)')
   context.fillStyle = gradient
   context.fillRect(0, 0, size, size)
   const texture = new THREE.CanvasTexture(canvas)
@@ -59,7 +84,7 @@ export class ArtifactViewer {
     this.options = options
     options.onStatus?.('loading')
 
-    this.scene.background = new THREE.Color('#131511')
+    this.scene.background = makeBackdropTexture()
     this.camera = new THREE.PerspectiveCamera(42, 1, 0.02, 60)
     this.camera.position.copy(this.homePosition)
 
@@ -111,14 +136,14 @@ export class ArtifactViewer {
 
     const shadowPlane = new THREE.Mesh(
       new THREE.CircleGeometry(1.7, 48),
-      new THREE.ShadowMaterial({ opacity: 0.42 }),
+      new THREE.ShadowMaterial({ opacity: 0.3 }),
     )
     shadowPlane.rotation.x = -Math.PI / 2
     shadowPlane.position.y = -0.69
     shadowPlane.receiveShadow = true
     this.scene.add(shadowPlane)
 
-    const key = new THREE.SpotLight('#ffe3bb', 140, 0, 0.55, 0.5, 2)
+    const key = new THREE.SpotLight('#fff6ea', 140, 0, 0.55, 0.5, 2)
     key.position.set(2.4, 3.1, 1.6)
     key.castShadow = true
     key.shadow.mapSize.set(1024, 1024)
@@ -126,11 +151,11 @@ export class ArtifactViewer {
     key.shadow.radius = 4
     this.scene.add(key, key.target)
 
-    const rim = new THREE.DirectionalLight('#b8c8e8', 1.6)
+    const rim = new THREE.DirectionalLight('#d8d6d2', 1.6)
     rim.position.set(-2.2, 1.4, -2.4)
     this.scene.add(rim)
 
-    const fill = new THREE.HemisphereLight('#d9cfba', '#15170f', 0.5)
+    const fill = new THREE.HemisphereLight('#efedea', '#a9a7a4', 0.55)
     this.scene.add(fill)
   }
 

@@ -48,6 +48,31 @@ const TOUR_SEGMENTS = makeTourSegments()
 const clamp = THREE.MathUtils.clamp
 const ease = (value: number) => value * value * (3 - 2 * value)
 
+/** Shared ink-wash palette: light xuan paper room, black/gray only (case brass excepted). */
+const INK = {
+  background: '#d8d6d3',
+  wall: '#d6d4d1',
+  floor: '#b3b1ae',
+  ceiling: '#cfcdcb',
+  side: '#c9c7c3',
+  pilaster: '#bab8b4',
+  trim: '#a9a7a4',
+  frame: '#84827f',
+  lampNeutral: '#fff8ef',
+  dust: '#8a8885',
+  paper: '#f4f2ef',
+  paperEdge: '#b8b6b3',
+  paperHairline: '#cfcdca',
+  baseline: 'rgba(150,148,145,0.4)',
+  inkStrong: '#1a1a1a',
+  inkBody: '#3c3c3c',
+  inkMuted: '#6b6966',
+  inkFaint: 'rgba(26,26,26,0.35)',
+  debug: '#6f6d6a',
+  select: '#3a3a3a',
+} as const
+const BASE_EXPOSURE = 1.06
+
 function mulberry32(seed: number) {
   let state = seed >>> 0
   return () => {
@@ -68,7 +93,7 @@ function finishTexture(canvas: HTMLCanvasElement, repeatX: number, repeatY: numb
   return texture
 }
 
-/** Painted masonry wall: staggered block courses, mortar joints, weathering. Canvas covers 3 m x 3 m. */
+/** Light xuan-paper wall: fine fibers, cloud-like mottling and sparse faint ink dots. Canvas covers 3 m x 3 m. */
 function makeWallTextures() {
   const size = 1024
   const canvas = document.createElement('canvas')
@@ -80,63 +105,56 @@ function makeWallTextures() {
   bump.width = bump.height = size
   const bumpContext = bump.getContext('2d')!
 
-  context.fillStyle = '#454a3f'
+  context.fillStyle = INK.wall
   context.fillRect(0, 0, size, size)
-  bumpContext.fillStyle = '#9a9a9a'
+  bumpContext.fillStyle = '#7f7f7f'
   bumpContext.fillRect(0, 0, size, size)
 
-  const course = size / 8 // 0.375 m per course
-  const block = size / 4 // 0.75 m per block
-  for (let row = 0; row < 8; row += 1) {
-    const y = row * course
-    const offset = row % 2 ? block / 2 : 0
-    for (let col = -1; col < 5; col += 1) {
-      const x = col * block + offset
-      const tone = 0.9 + random() * 0.22
-      const r = Math.round(0x45 * tone)
-      const g = Math.round(0x4a * tone)
-      const b = Math.round(0x3f * tone)
-      context.fillStyle = `rgb(${r},${g},${b})`
-      context.fillRect(x + 2, y + 2, block - 4, course - 4)
-      // per-block mottling
-      for (let i = 0; i < 90; i += 1) {
-        const shade = Math.floor(random() * 36)
-        context.fillStyle = random() > 0.45
-          ? `rgba(238,232,214,${0.02 + random() * 0.035})`
-          : `rgba(${shade},${shade},${shade},${0.025 + random() * 0.04})`
-        const dot = 1 + random() * 2.4
-        context.fillRect(x + 2 + random() * (block - 6), y + 2 + random() * (course - 6), dot, dot)
-      }
-      // faint vertical drip stains on some blocks
-      if (random() > 0.55) {
-        const stainX = x + 6 + random() * (block - 12)
-        const gradient = context.createLinearGradient(0, y, 0, y + course)
-        gradient.addColorStop(0, `rgba(24,28,22,${0.05 + random() * 0.07})`)
-        gradient.addColorStop(1, 'rgba(24,28,22,0)')
-        context.fillStyle = gradient
-        context.fillRect(stainX, y, 3 + random() * 7, course)
-      }
-      bumpContext.fillStyle = `rgb(${150 + Math.floor(random() * 40)},${150},${150})`
-      bumpContext.fillRect(x + 2, y + 2, block - 4, course - 4)
+  // paper fiber streaks — short, soft, mostly horizontal with some vertical
+  for (let i = 0; i < 2600; i += 1) {
+    const x = random() * size
+    const y = random() * size
+    const length = 6 + random() * 26
+    const light = random() > 0.5
+    context.strokeStyle = light
+      ? `rgba(255,255,255,${0.015 + random() * 0.03})`
+      : `rgba(110,108,105,${0.012 + random() * 0.026})`
+    context.lineWidth = 0.6 + random() * 0.8
+    context.beginPath()
+    if (random() > 0.22) {
+      context.moveTo(x, y)
+      context.lineTo(x + length, y + (random() - 0.5) * 2.4)
+    } else {
+      context.moveTo(x, y)
+      context.lineTo(x + (random() - 0.5) * 2.4, y + length)
     }
+    context.stroke()
   }
-  // mortar joints (recessed in bump)
-  bumpContext.fillStyle = '#1c1c1c'
-  for (let row = 0; row <= 8; row += 1) bumpContext.fillRect(0, row * course - 2, size, 4)
-  for (let row = 0; row < 8; row += 1) {
-    const offset = row % 2 ? block / 2 : 0
-    for (let col = 0; col < 5; col += 1) bumpContext.fillRect(col * block + offset - 2, row * course, 4, course)
-  }
-  // broad tonal weathering patches
-  for (let i = 0; i < 26; i += 1) {
+  // cloud-floc mottling — broad, very low contrast light/dark patches
+  for (let i = 0; i < 44; i += 1) {
     const px = random() * size
     const py = random() * size
-    const radius = 120 + random() * 220
+    const radius = 60 + random() * 190
+    const light = random() > 0.45
     const gradient = context.createRadialGradient(px, py, 0, px, py, radius)
-    gradient.addColorStop(0, `rgba(18,22,17,${0.02 + random() * 0.03})`)
-    gradient.addColorStop(1, 'rgba(18,22,17,0)')
+    gradient.addColorStop(0, light ? `rgba(255,255,255,${0.02 + random() * 0.028})` : `rgba(96,94,91,${0.014 + random() * 0.024})`)
+    gradient.addColorStop(1, 'rgba(128,126,123,0)')
     context.fillStyle = gradient
     context.fillRect(0, 0, size, size)
+  }
+  // sparse faint ink dots — small and pale, never dirty
+  for (let i = 0; i < 380; i += 1) {
+    const dot = 0.5 + random() * 1.5
+    context.fillStyle = `rgba(88,86,83,${0.035 + random() * 0.05})`
+    context.beginPath()
+    context.arc(random() * size, random() * size, dot, 0, Math.PI * 2)
+    context.fill()
+  }
+  // gentle paper tooth in the bump map
+  for (let i = 0; i < 9000; i += 1) {
+    const shade = 118 + Math.floor(random() * 22)
+    bumpContext.fillStyle = `rgba(${shade},${shade},${shade},0.5)`
+    bumpContext.fillRect(random() * size, random() * size, 1.2, 1.2)
   }
 
   return {
@@ -145,7 +163,7 @@ function makeWallTextures() {
   }
 }
 
-/** Polished stone floor tiles. Canvas covers 4 m x 4 m (four 1 m tiles). */
+/** Matte neutral-gray stone floor: large soft tiles, low contrast, no polish. Canvas covers 4 m x 4 m (four 1 m tiles). */
 function makeFloorTextures() {
   const size = 1024
   const canvas = document.createElement('canvas')
@@ -156,7 +174,7 @@ function makeFloorTextures() {
   const bump = document.createElement('canvas')
   bump.width = bump.height = size
   const bumpContext = bump.getContext('2d')!
-  bumpContext.fillStyle = '#8c8c8c'
+  bumpContext.fillStyle = '#828282'
   bumpContext.fillRect(0, 0, size, size)
 
   const tile = size / 4
@@ -164,50 +182,50 @@ function makeFloorTextures() {
     for (let col = 0; col < 4; col += 1) {
       const x = col * tile
       const y = row * tile
-      const tone = 0.88 + random() * 0.24
-      const base = [0x6e, 0x6c, 0x62].map(channel => Math.round(channel * tone))
+      const tone = 0.97 + random() * 0.06
+      const base = [0xb3, 0xb1, 0xae].map(channel => Math.round(channel * tone))
       context.fillStyle = `rgb(${base[0]},${base[1]},${base[2]})`
       context.fillRect(x, y, tile, tile)
-      // mineral speckle
-      for (let i = 0; i < 1500; i += 1) {
+      // fine mineral speckle, kept faint
+      for (let i = 0; i < 1100; i += 1) {
         const light = random() > 0.5
         context.fillStyle = light
-          ? `rgba(235,230,214,${0.02 + random() * 0.05})`
-          : `rgba(30,32,28,${0.02 + random() * 0.05})`
-        const dot = 0.6 + random() * 1.6
+          ? `rgba(255,255,255,${0.015 + random() * 0.03})`
+          : `rgba(70,68,66,${0.015 + random() * 0.03})`
+        const dot = 0.6 + random() * 1.5
         context.fillRect(x + random() * tile, y + random() * tile, dot, dot)
       }
-      // occasional veins
+      // occasional soft vein
       if (random() > 0.5) {
-        context.strokeStyle = `rgba(52,54,48,${0.06 + random() * 0.06})`
-        context.lineWidth = 1 + random() * 1.4
+        context.strokeStyle = `rgba(96,94,92,${0.04 + random() * 0.04})`
+        context.lineWidth = 1 + random() * 1.2
         context.beginPath()
         let vy = y + random() * tile
         context.moveTo(x, vy)
         for (let vx = 0; vx <= tile; vx += 24) {
-          vy += (random() - 0.5) * 26
+          vy += (random() - 0.5) * 22
           context.lineTo(x + vx, vy)
         }
         context.stroke()
       }
-      bumpContext.fillStyle = `rgb(${140 + Math.floor(random() * 30)},140,140)`
+      bumpContext.fillStyle = `rgb(${126 + Math.floor(random() * 18)},126,126)`
       bumpContext.fillRect(x + 2, y + 2, tile - 4, tile - 4)
     }
   }
-  // grout lines
-  context.fillStyle = 'rgba(26,28,24,0.85)'
-  bumpContext.fillStyle = '#141414'
+  // thin grout seams
+  context.fillStyle = 'rgba(118,116,113,0.55)'
+  bumpContext.fillStyle = '#5f5f5f'
   for (let i = 0; i <= 4; i += 1) {
-    context.fillRect(0, i * tile - 2, size, 4)
-    context.fillRect(i * tile - 2, 0, 4, size)
-    bumpContext.fillRect(0, i * tile - 3, size, 6)
-    bumpContext.fillRect(i * tile - 3, 0, 6, size)
+    context.fillRect(0, i * tile - 1.5, size, 3)
+    context.fillRect(i * tile - 1.5, 0, 3, size)
+    bumpContext.fillRect(0, i * tile - 2, size, 4)
+    bumpContext.fillRect(i * tile - 2, 0, 4, size)
   }
-  // subtle polish sheen variation
-  for (let i = 0; i < 18; i += 1) {
-    const gradient = context.createRadialGradient(random() * size, random() * size, 0, random() * size, random() * size, 90 + random() * 160)
-    gradient.addColorStop(0, `rgba(255,252,240,${0.015 + random() * 0.02})`)
-    gradient.addColorStop(1, 'rgba(255,252,240,0)')
+  // faint matte tonal drift
+  for (let i = 0; i < 14; i += 1) {
+    const gradient = context.createRadialGradient(random() * size, random() * size, 0, random() * size, random() * size, 110 + random() * 180)
+    gradient.addColorStop(0, `rgba(255,255,255,${0.01 + random() * 0.016})`)
+    gradient.addColorStop(1, 'rgba(255,255,255,0)')
     context.fillStyle = gradient
     context.fillRect(0, 0, size, size)
   }
@@ -249,24 +267,24 @@ function makeStoneTexture() {
   return finishTexture(canvas, 3, 0.5)
 }
 
-/** Dark acoustic ceiling panels. */
+/** Light matte ceiling panels with hairline seams. */
 function makeCeilingTexture() {
   const size = 512
   const canvas = document.createElement('canvas')
   canvas.width = canvas.height = size
   const context = canvas.getContext('2d')!
   const random = mulberry32(77)
-  context.fillStyle = '#131412'
+  context.fillStyle = INK.ceiling
   context.fillRect(0, 0, size, size)
-  context.strokeStyle = 'rgba(0,0,0,0.6)'
-  context.lineWidth = 3
+  context.strokeStyle = 'rgba(90,88,85,0.16)'
+  context.lineWidth = 2
   for (let i = 0; i <= 4; i += 1) {
     context.beginPath(); context.moveTo(0, i * 128); context.lineTo(size, i * 128); context.stroke()
     context.beginPath(); context.moveTo(i * 128, 0); context.lineTo(i * 128, size); context.stroke()
   }
-  for (let i = 0; i < 9000; i += 1) {
-    const shade = 14 + Math.floor(random() * 22)
-    context.fillStyle = `rgba(${shade},${shade},${shade},0.35)`
+  for (let i = 0; i < 7000; i += 1) {
+    const shade = 196 + Math.floor(random() * 24)
+    context.fillStyle = `rgba(${shade},${shade},${shade},0.3)`
     context.fillRect(random() * size, random() * size, 1, 1)
   }
   return finishTexture(canvas, 9, 2)
@@ -279,8 +297,8 @@ function makeShadowBlobTexture() {
   canvas.width = canvas.height = size
   const context = canvas.getContext('2d')!
   const gradient = context.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2)
-  gradient.addColorStop(0, 'rgba(0,0,0,0.5)')
-  gradient.addColorStop(0.62, 'rgba(0,0,0,0.28)')
+  gradient.addColorStop(0, 'rgba(0,0,0,0.55)')
+  gradient.addColorStop(0.62, 'rgba(0,0,0,0.3)')
   gradient.addColorStop(1, 'rgba(0,0,0,0)')
   context.fillStyle = gradient
   context.fillRect(0, 0, size, size)
@@ -306,6 +324,188 @@ function textLines(context: CanvasRenderingContext2D, text: string, maxWidth: nu
   return output
 }
 
+/* ------------------------------------------------------------------------ */
+/* Ink-wash corner ornaments — procedural sumi-e style, black & gray only.  */
+/* ------------------------------------------------------------------------ */
+
+/** One tapered ink stroke between two points. */
+function inkStroke(
+  context: CanvasRenderingContext2D,
+  x1: number, y1: number, x2: number, y2: number,
+  width: number, tone: string, alpha: number,
+) {
+  const steps = Math.max(3, Math.round(Math.hypot(x2 - x1, y2 - y1) / 26))
+  for (let i = 0; i < steps; i += 1) {
+    const t0 = i / steps
+    const t1 = (i + 1) / steps
+    context.strokeStyle = `rgba(${tone},${alpha * (1 - t0 * 0.55)})`
+    context.lineWidth = Math.max(0.6, width * (1 - t0 * 0.6))
+    context.lineCap = 'round'
+    context.beginPath()
+    context.moveTo(x1 + (x2 - x1) * t0, y1 + (y2 - y1) * t0)
+    context.lineTo(x1 + (x2 - x1) * t1, y1 + (y2 - y1) * t1)
+    context.stroke()
+  }
+}
+
+/** A single pointed bamboo leaf. */
+function inkLeaf(context: CanvasRenderingContext2D, x: number, y: number, angle: number, length: number, tone: string, alpha: number) {
+  context.save()
+  context.translate(x, y)
+  context.rotate(angle)
+  context.fillStyle = `rgba(${tone},${alpha})`
+  context.beginPath()
+  context.moveTo(0, 0)
+  context.quadraticCurveTo(length * 0.42, -length * 0.16, length, 0)
+  context.quadraticCurveTo(length * 0.42, length * 0.16, 0, 0)
+  context.fill()
+  context.restore()
+}
+
+/** Ink bamboo growing from a corner: tapered segmented stalk + leaf sprays. */
+function drawInkBamboo(context: CanvasRenderingContext2D, width: number, height: number, random: () => number, corner: 'tl' | 'bl') {
+  const dirY = corner === 'tl' ? 1 : -1
+  const baseX = width * 0.04
+  const baseY = corner === 'tl' ? height * 0.02 : height * 0.98
+  // main stalks, gently curving away from the corner
+  const stalks = [
+    { ex: width * 0.62, sway: 0.10, w: 11 },
+    { ex: width * 0.36, sway: -0.06, w: 7.5 },
+    { ex: width * 0.85, sway: 0.16, w: 5.5 },
+  ]
+  for (const stalk of stalks) {
+    const joints = 5
+    let px = baseX + width * 0.05 * random()
+    let py = baseY
+    for (let j = 0; j < joints; j += 1) {
+      const t = (j + 1) / joints
+      const nx = baseX + stalk.ex * t + Math.sin(t * 2.4) * width * stalk.sway
+      const ny = baseY + dirY * height * 0.94 * t
+      inkStroke(context, px, py, nx, ny, stalk.w * (1 - t * 0.5), '38,38,38', 0.62 - t * 0.1)
+      // joint ring
+      context.fillStyle = 'rgba(38,38,38,0.4)'
+      context.beginPath()
+      context.ellipse(nx, ny, stalk.w * 0.62, stalk.w * 0.34, Math.atan2(ny - py, nx - px), 0, Math.PI * 2)
+      context.fill()
+      // leaf spray at every other joint
+      if (j >= 1 && j % 2 === 1) {
+        const leaves = 4 + Math.floor(random() * 4)
+        for (let l = 0; l < leaves; l += 1) {
+          const side = random() > 0.5 ? 1 : -1
+          const angle = (corner === 'tl' ? 0 : Math.PI) + side * (0.5 + random() * 0.9)
+          const lx = nx + (random() - 0.5) * 26
+          const ly = ny + dirY * (random() - 0.4) * 20
+          inkLeaf(context, lx, ly, angle, 50 + random() * 60, random() > 0.3 ? '42,42,42' : '110,108,105', 0.42 + random() * 0.3)
+        }
+      }
+      px = nx; py = ny
+    }
+  }
+}
+
+/** Distant ink-mountain silhouette: a cluster of slender soft peaks hugging one edge. */
+function drawInkMountains(context: CanvasRenderingContext2D, x0: number, width: number, yBase: number, amplitude: number, random: () => number, tone: string, alpha: number) {
+  const peaks = 3 + Math.floor(random() * 2)
+  for (let p = 0; p < peaks; p += 1) {
+    const px = x0 + width * ((p + 0.5) / peaks) + (random() - 0.5) * width * 0.14
+    const peakH = amplitude * (0.45 + random() * 0.55)
+    const halfW = width / peaks * (0.34 + random() * 0.22)
+    const gradient = context.createLinearGradient(0, yBase - peakH, 0, yBase)
+    gradient.addColorStop(0, `rgba(${tone},${alpha})`)
+    gradient.addColorStop(1, `rgba(${tone},${alpha * 0.55})`)
+    context.fillStyle = gradient
+    context.beginPath()
+    context.moveTo(px - halfW, yBase)
+    context.quadraticCurveTo(px - halfW * 0.3, yBase - peakH * 0.72, px, yBase - peakH)
+    context.quadraticCurveTo(px + halfW * 0.35, yBase - peakH * 0.6, px + halfW, yBase)
+    context.closePath()
+    context.fill()
+  }
+}
+
+/** Small moored skiff with a canopy and a seated figure. */
+function drawInkBoat(context: CanvasRenderingContext2D, x: number, y: number, scale: number, flip: boolean) {
+  context.save()
+  context.translate(x, y)
+  context.scale(flip ? -scale : scale, scale)
+  context.fillStyle = 'rgba(32,32,32,0.78)'
+  // hull
+  context.beginPath()
+  context.moveTo(-56, 0)
+  context.quadraticCurveTo(-30, 16, 0, 15)
+  context.quadraticCurveTo(38, 14, 58, -6)
+  context.quadraticCurveTo(40, 22, 0, 24)
+  context.quadraticCurveTo(-42, 23, -56, 0)
+  context.fill()
+  // canopy
+  context.beginPath()
+  context.moveTo(-18, -2)
+  context.quadraticCurveTo(0, -26, 22, -4)
+  context.closePath()
+  context.fill()
+  // seated figure
+  context.beginPath()
+  context.arc(-2, -10, 5, 0, Math.PI * 2)
+  context.fill()
+  context.fillRect(-7, -7, 11, 9)
+  // pole
+  context.strokeStyle = 'rgba(32,32,32,0.45)'
+  context.lineWidth = 2.4
+  context.beginPath()
+  context.moveTo(34, -8)
+  context.lineTo(48, 14)
+  context.stroke()
+  context.restore()
+}
+
+/** Mountains + water ripples + skiff, anchored to a bottom corner. */
+function drawInkBoatScene(context: CanvasRenderingContext2D, width: number, height: number, random: () => number, corner: 'br' | 'bl') {
+  const flip = corner === 'bl'
+  const anchorX = flip ? 0 : width
+  const dirX = flip ? 1 : -1
+  // two faint ridges of distant peaks hugging the outer edge
+  drawInkMountains(context, width * 0.3, width * 0.68, height * 0.52, height * 0.2, random, '118,116,113', 0.26)
+  drawInkMountains(context, width * 0.42, width * 0.56, height * 0.56, height * 0.13, random, '142,140,137', 0.24)
+  // water ripples — thin broken horizontal strokes
+  for (let i = 0; i < 16; i += 1) {
+    const y = height * (0.6 + random() * 0.28)
+    const start = anchorX + dirX * (width * 0.06 + random() * width * 0.3)
+    const len = 30 + random() * 90
+    context.strokeStyle = `rgba(70,68,66,${0.16 + random() * 0.2})`
+    context.lineWidth = 1.4
+    context.beginPath()
+    context.moveTo(start, y)
+    context.quadraticCurveTo(start + dirX * len * 0.5, y - 3, start + dirX * len, y)
+    context.stroke()
+  }
+  // the skiff
+  drawInkBoat(context, anchorX + dirX * width * 0.42, height * 0.7, 2.1 + random() * 0.5, flip)
+  // a few drifting ink flecks
+  for (let i = 0; i < 10; i += 1) {
+    context.fillStyle = `rgba(60,58,56,${0.12 + random() * 0.16})`
+    context.beginPath()
+    context.arc(anchorX + dirX * random() * width * 0.85, height * (0.3 + random() * 0.6), 1 + random() * 2.2, 0, Math.PI * 2)
+    context.fill()
+  }
+}
+
+type InkOrnamentKind = 'bamboo-tl' | 'boat-br'
+
+/** Renders one ink-wash motif on a transparent canvas, anchored to the named corner. */
+function makeInkOrnamentTexture(kind: InkOrnamentKind) {
+  const size = 1024
+  const canvas = document.createElement('canvas')
+  canvas.width = canvas.height = size
+  const context = canvas.getContext('2d')!
+  const random = mulberry32(kind === 'bamboo-tl' ? 501 : 733)
+  if (kind === 'bamboo-tl') drawInkBamboo(context, size, size, random, 'tl')
+  else drawInkBoatScene(context, size, size, random, 'br')
+  const texture = new THREE.CanvasTexture(canvas)
+  texture.colorSpace = THREE.SRGBColorSpace
+  texture.anisotropy = 8
+  return texture
+}
+
 function makeZoneTexture(zone: WallZone, language: Language, showLabels: boolean, selected: boolean) {
   const width = Math.min(2048, Math.max(384, Math.round(zone.w * 900)))
   const height = Math.max(64, Math.round(width * zone.h / zone.w))
@@ -317,43 +517,92 @@ function makeZoneTexture(zone: WallZone, language: Language, showLabels: boolean
   const text = zone.text[language]?.trim() ?? ''
   context.clearRect(0, 0, width, height)
 
-  if (!text) {
-    context.strokeStyle = selected ? 'rgba(183,145,85,0.9)' : 'rgba(242,235,221,0.22)'
-    context.lineWidth = Math.max(1, px(0.002))
-    context.strokeRect(1, 1, width - 2, height - 2)
-    const tick = Math.min(20, height * 0.16, width * 0.04)
-    context.strokeStyle = selected ? '#b79155' : 'rgba(242,235,221,0.55)'
-    context.lineWidth = Math.max(1.5, px(0.003))
-    for (const [x, y, sx, sy] of [[0, 0, 1, 1], [width, 0, -1, 1], [0, height, 1, -1], [width, height, -1, -1]] as const) {
+  const serifStack = 'Georgia, "Songti SC", "STSong", "SimSun", serif'
+  const sansStack = 'Inter, "Helvetica Neue", Helvetica, "PingFang SC", "Microsoft YaHei", sans-serif'
+  const monoStack = '"SFMono-Regular", ui-monospace, Consolas, monospace'
+  // Curatorial paper cards for every plaque-style zone; section headers stay bare on the wall.
+  const hasCard = zone.style !== 'section'
+  const isSerif = zone.style === 'title' || zone.style === 'verticalTitle' || zone.style === 'object' || zone.style === 'section'
+  const textColor = zone.style === 'meta' || zone.style === 'subtitle'
+    ? INK.inkMuted
+    : zone.style === 'body' || zone.style === 'caption'
+      ? INK.inkBody
+      : INK.inkStrong
+
+  const drawCard = () => {
+    if (!hasCard) return
+    const radius = Math.max(3, px(0.008))
+    const path = () => {
       context.beginPath()
-      context.moveTo(x, y + sy * tick)
-      context.lineTo(x, y)
-      context.lineTo(x + sx * tick, y)
-      context.stroke()
+      context.moveTo(radius, 0.5)
+      context.lineTo(width - radius - 0.5, 0.5)
+      context.arcTo(width - 0.5, 0.5, width - 0.5, radius + 0.5, radius)
+      context.lineTo(width - 0.5, height - radius - 0.5)
+      context.arcTo(width - 0.5, height - 0.5, width - radius - 0.5, height - 0.5, radius)
+      context.arcTo(radius + 0.5, height - 0.5, 0.5, height - radius - 0.5, radius)
+      context.arcTo(0.5, 0.5, radius + 0.5, 0.5, radius)
+      context.closePath()
+    }
+    context.fillStyle = INK.paper
+    path()
+    context.fill()
+    context.strokeStyle = selected ? INK.select : INK.paperEdge
+    context.lineWidth = selected ? Math.max(1.5, px(0.0022)) : Math.max(1, px(0.0012))
+    context.stroke()
+  }
+
+  if (!text) {
+    // Empty container: a complete, stable blank paper card — never any placeholder text.
+    drawCard()
+    if (hasCard) {
+      // faint baseline rules suggesting the reserved typography bands
+      const bands: [number, number][] = [[0.3, 0.46], [0.56, 0.68], [0.78, 0.34]]
+      context.fillStyle = INK.baseline
+      const lineHeight = Math.max(1.5, height * 0.045)
+      for (const [cy, cw] of bands) {
+        if (height * cy + lineHeight > height - 4) continue
+        const wLine = width * cw * (0.9 + (zone.bay % 3) * 0.05)
+        context.fillRect((width - wLine) / 2, height * cy, wLine, lineHeight)
+      }
+    } else {
+      // bare empty section: faint corner ticks only
+      context.strokeStyle = INK.inkFaint
+      context.lineWidth = Math.max(1, px(0.002))
+      const tick = Math.min(20, height * 0.16, width * 0.04)
+      for (const [x, y, sx, sy] of [[0, 0, 1, 1], [width, 0, -1, 1], [0, height, 1, -1], [width, height, -1, -1]] as const) {
+        context.beginPath()
+        context.moveTo(x, y + sy * tick)
+        context.lineTo(x, y)
+        context.lineTo(x + sx * tick, y)
+        context.stroke()
+      }
     }
     if (showLabels) {
       const fontSize = clamp(px(0.032), 12, 25)
-      context.font = `500 ${fontSize}px "SFMono-Regular", Consolas, monospace`
-      context.fillStyle = selected ? 'rgba(211,176,117,0.95)' : 'rgba(242,235,221,0.52)'
+      context.font = `500 ${fontSize}px ${monoStack}`
+      context.fillStyle = selected ? INK.select : INK.debug
       context.textAlign = 'left'
       context.textBaseline = 'top'
       const label = `[${zone.label}]`
-      context.fillText(label, px(0.035), px(0.03), width - px(0.07))
+      const lx = hasCard ? px(0.03) : px(0.035)
+      const ly = hasCard ? px(0.024) : px(0.03)
+      context.fillText(label, lx, ly, width - lx * 2)
     }
   } else {
     const worldSizes = { title: 0.26, verticalTitle: 0.3, subtitle: 0.04, body: 0.032, section: 0.09, object: 0.07, caption: 0.026, meta: 0.018 }
     const size = px(worldSizes[zone.style])
-    const serif = zone.style === 'title' || zone.style === 'verticalTitle' || zone.style === 'object' || zone.style === 'section'
-    context.font = `${serif ? 500 : 400} ${size}px ${serif ? 'Georgia, "Songti SC", serif' : 'Inter, Helvetica, "PingFang SC", sans-serif'}`
-    context.fillStyle = '#f2ebdd'
+    drawCard()
+    context.font = `${isSerif ? 500 : 400} ${size}px ${isSerif ? serifStack : sansStack}`
+    context.fillStyle = textColor
     context.textBaseline = 'top'
     if (zone.style === 'verticalTitle') {
+      const pad = hasCard ? px(0.02) : 0
       const characters = [...text.replace(/\s/g, '')].slice(0, zone.chars ?? 8)
-      const lineHeight = Math.min(size * 1.12, height / Math.max(characters.length, 1))
+      const lineHeight = Math.min(size * 1.12, (height - pad * 2) / Math.max(characters.length, 1))
       context.textAlign = 'center'
-      characters.forEach((character, index) => context.fillText(character, width / 2, Math.max(0, (height - lineHeight * characters.length) / 2 + index * lineHeight)))
+      characters.forEach((character, index) => context.fillText(character, width / 2, pad + Math.max(0, (height - pad * 2 - lineHeight * characters.length) / 2 + index * lineHeight)))
     } else {
-      const padding = px(0.012)
+      const padding = px(0.014) + (hasCard ? px(0.008) : 0)
       const lines = textLines(context, text, width - padding * 2).slice(0, zone.lines)
       const lineHeight = size * (zone.style === 'body' || zone.style === 'caption' ? 1.5 : 1.18)
       context.textAlign = zone.align
@@ -372,12 +621,12 @@ function makeZoneTexture(zone: WallZone, language: Language, showLabels: boolean
 const PROXY_PLAQUE_MATERIAL = new THREE.MeshStandardMaterial({ color: '#9a7440', metalness: 1, roughness: 0.35, envMapIntensity: 1.2 })
 
 const PROXY_MATERIALS: THREE.MeshStandardMaterial[] = [
-  new THREE.MeshStandardMaterial({ color: '#6e5638', metalness: 0.9, roughness: 0.4, envMapIntensity: 1.1 }),
-  new THREE.MeshStandardMaterial({ color: '#e9e2d2', metalness: 0.02, roughness: 0.24, envMapIntensity: 0.9 }),
-  new THREE.MeshStandardMaterial({ color: '#7ba08a', metalness: 0.05, roughness: 0.32, envMapIntensity: 1.0 }),
-  new THREE.MeshStandardMaterial({ color: '#5a2320', metalness: 0.1, roughness: 0.16, envMapIntensity: 1.2 }),
-  new THREE.MeshStandardMaterial({ color: '#b3ac9c', metalness: 0.02, roughness: 0.72, envMapIntensity: 0.4 }),
-  new THREE.MeshStandardMaterial({ color: '#c7d6d0', metalness: 0.05, roughness: 0.1, transparent: true, opacity: 0.6, envMapIntensity: 1.4 }),
+  new THREE.MeshStandardMaterial({ color: '#4a4a4a', metalness: 0.9, roughness: 0.4, envMapIntensity: 1.1 }),
+  new THREE.MeshStandardMaterial({ color: '#e8e6e2', metalness: 0.02, roughness: 0.24, envMapIntensity: 0.9 }),
+  new THREE.MeshStandardMaterial({ color: '#6e6c69', metalness: 0.05, roughness: 0.32, envMapIntensity: 1.0 }),
+  new THREE.MeshStandardMaterial({ color: '#2e2e2e', metalness: 0.1, roughness: 0.16, envMapIntensity: 1.2 }),
+  new THREE.MeshStandardMaterial({ color: '#b5b3b0', metalness: 0.02, roughness: 0.72, envMapIntensity: 0.4 }),
+  new THREE.MeshStandardMaterial({ color: '#c9c7c4', metalness: 0.05, roughness: 0.1, transparent: true, opacity: 0.6, envMapIntensity: 1.4 }),
 ]
 
 export class WallScene {
@@ -422,15 +671,15 @@ export class WallScene {
     this.container = container
     this.config = config
     this.callbacks = callbacks
-    this.scene.background = new THREE.Color('#11130f')
-    this.scene.fog = new THREE.FogExp2('#11130f', 0.02)
+    this.scene.background = new THREE.Color(INK.background)
+    this.scene.fog = new THREE.FogExp2(INK.background, 0.006)
     this.camera = new THREE.PerspectiveCamera(52, 1, 0.05, 60)
     this.camera.rotation.order = 'YXZ'
     this.renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true, powerPreference: 'high-performance' })
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
     this.renderer.outputColorSpace = THREE.SRGBColorSpace
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping
-    this.renderer.toneMappingExposure = 0.92
+    this.renderer.toneMappingExposure = BASE_EXPOSURE
     this.renderer.shadowMap.enabled = true
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap
     this.renderer.domElement.className = 'wall-canvas'
@@ -441,7 +690,7 @@ export class WallScene {
     // Neutral HDRI-style environment for convincing metal / glass / floor reflections.
     const pmrem = new THREE.PMREMGenerator(this.renderer)
     this.scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture
-    this.scene.environmentIntensity = 0.22
+    this.scene.environmentIntensity = 0.35
     pmrem.dispose()
 
     this.buildArchitecture()
@@ -472,26 +721,27 @@ export class WallScene {
     const wallMaterial = new THREE.MeshStandardMaterial({
       map: wallTextures.map,
       bumpMap: wallTextures.bumpMap,
-      bumpScale: 0.9,
+      bumpScale: 0.45,
       color: '#ffffff',
-      roughness: 0.94,
+      roughness: 0.92,
       envMapIntensity: 0.12,
     })
     const floorTextures = makeFloorTextures()
     const floorMaterial = new THREE.MeshStandardMaterial({
       map: floorTextures.map,
       bumpMap: floorTextures.bumpMap,
-      bumpScale: 0.35,
-      color: '#c9c7bc',
-      roughness: 0.24,
-      metalness: 0.06,
-      envMapIntensity: 0.85,
+      bumpScale: 0.3,
+      color: '#ffffff',
+      roughness: 0.62,
+      metalness: 0.02,
+      envMapIntensity: 0.2,
     })
-    const ceilingMaterial = new THREE.MeshStandardMaterial({ map: makeCeilingTexture(), color: '#b9bab4', roughness: 0.96, envMapIntensity: 0.05 })
+    const ceilingMaterial = new THREE.MeshStandardMaterial({ map: makeCeilingTexture(), color: '#ffffff', roughness: 0.96, envMapIntensity: 0.06 })
     const stoneMaterial = new THREE.MeshStandardMaterial({ map: makeStoneTexture(), color: '#ddd6c8', roughness: 0.58, envMapIntensity: 0.3 })
     const brassMaterial = new THREE.MeshStandardMaterial({ color: '#9a7440', metalness: 1.0, roughness: 0.3, envMapIntensity: 1.3 })
-    const darkMaterial = new THREE.MeshStandardMaterial({ color: '#11120f', roughness: 0.85 })
-    const trimMaterial = new THREE.MeshStandardMaterial({ color: '#191a1c', roughness: 0.38, metalness: 0.25, envMapIntensity: 0.6 })
+    const darkMaterial = new THREE.MeshStandardMaterial({ color: INK.frame, roughness: 0.85 })
+    const trimMaterial = new THREE.MeshStandardMaterial({ color: INK.trim, roughness: 0.55, metalness: 0.1, envMapIntensity: 0.3 })
+    const datumMaterial = new THREE.MeshStandardMaterial({ color: '#7c7a77', roughness: 0.5, metalness: 0.2, envMapIntensity: 0.3 })
     const glassMaterial = new THREE.MeshPhysicalMaterial({
       color: '#e2ece4',
       transparent: true,
@@ -513,7 +763,7 @@ export class WallScene {
     this.mesh(new THREE.PlaneGeometry(22, 4), ceilingMaterial, [9, 3.4, 1.5]).rotation.x = Math.PI / 2
 
     // side return walls close the gallery volume
-    const sideMaterial = new THREE.MeshStandardMaterial({ color: '#23261f', roughness: 0.92, envMapIntensity: 0.08 })
+    const sideMaterial = new THREE.MeshStandardMaterial({ color: INK.side, roughness: 0.92, envMapIntensity: 0.08 })
     const sideLeft = this.mesh(new THREE.PlaneGeometry(6, 3.4), sideMaterial, [0, 1.7, 1.7])
     sideLeft.rotation.y = Math.PI / 2
     const sideRight = this.mesh(new THREE.PlaneGeometry(6, 3.4), sideMaterial, [18, 1.7, 1.7])
@@ -521,22 +771,38 @@ export class WallScene {
     const entryFrame = this.mesh(new THREE.BoxGeometry(0.14, 3.4, 0.5), darkMaterial, [0.07, 1.7, -0.05])
     entryFrame.castShadow = true
 
+    // ink-wash corner ornaments, tucked just in front of the paper wall
+    const inkPlanes: [InkOrnamentKind, number, number, number, number][] = [
+      // [kind, width m, height m, centerX, centerY] — corners only, the middle 80% stays blank
+      ['bamboo-tl', 2.0, 1.7, 0.9, 2.6],
+      ['boat-br', 2.4, 1.5, 16.9, 1.05],
+    ]
+    for (const [kind, w, h, cx, cy] of inkPlanes) {
+      const ink = new THREE.Mesh(
+        new THREE.PlaneGeometry(w, h),
+        new THREE.MeshBasicMaterial({ map: makeInkOrnamentTexture(kind), transparent: true, opacity: 0.5, depthWrite: false, fog: false }),
+      )
+      ink.position.set(cx, cy, 0.01)
+      ink.renderOrder = 1
+      this.scene.add(ink)
+    }
+
     // skirting + crown shadow gap + datum line
     this.mesh(new THREE.BoxGeometry(18, 0.12, 0.03), trimMaterial, [9, 0.06, 0.016])
     this.mesh(new THREE.BoxGeometry(18, 0.05, 0.02), darkMaterial, [9, 3.36, 0.012])
-    this.mesh(new THREE.BoxGeometry(18, 0.005, 0.008), new THREE.MeshBasicMaterial({ color: '#141414' }), [9, 1.35, 0.009])
-    this.mesh(new THREE.BoxGeometry(0.04, 0.04, 0.009), new THREE.MeshBasicMaterial({ color: '#9e2b25' }), [0.04, 1.35, 0.013])
-    this.mesh(new THREE.BoxGeometry(0.02, 1.9, 0.025), new THREE.MeshBasicMaterial({ color: '#050605' }), [17.99, 1.35, 0.014])
+    this.mesh(new THREE.BoxGeometry(18, 0.005, 0.008), new THREE.MeshBasicMaterial({ color: '#7a7875' }), [9, 1.35, 0.009])
+    this.mesh(new THREE.BoxGeometry(0.04, 0.04, 0.009), new THREE.MeshBasicMaterial({ color: '#6e6c69' }), [0.04, 1.35, 0.013])
+    this.mesh(new THREE.BoxGeometry(0.02, 1.9, 0.025), new THREE.MeshBasicMaterial({ color: '#8a8885' }), [17.99, 1.35, 0.014])
     this.mesh(new THREE.BoxGeometry(18, 0.008, 0.016), darkMaterial, [9, 0.132, 0.014])
-    this.mesh(new THREE.BoxGeometry(18, 0.02, 0.025), brassMaterial, [9, 1.52, 0.028])
+    this.mesh(new THREE.BoxGeometry(18, 0.02, 0.025), datumMaterial, [9, 1.52, 0.028])
 
     // pilasters with cap and foot
-    const pilasterMaterial = new THREE.MeshStandardMaterial({ color: '#363b32', roughness: 0.93, envMapIntensity: 0.1 })
+    const pilasterMaterial = new THREE.MeshStandardMaterial({ color: INK.pilaster, roughness: 0.93, envMapIntensity: 0.1 })
     for (const x of [4.2, 6.2, 8.2, 10.2, 12.2, 14.2, 16.2]) {
       this.mesh(new THREE.BoxGeometry(0.12, 3.4, 0.06), pilasterMaterial, [x, 1.7, 0.03])
       this.mesh(new THREE.BoxGeometry(0.18, 0.06, 0.1), pilasterMaterial, [x, 3.31, 0.04])
       this.mesh(new THREE.BoxGeometry(0.18, 0.1, 0.1), pilasterMaterial, [x, 0.17, 0.04])
-      this.mesh(new THREE.BoxGeometry(0.16, 0.012, 0.09), brassMaterial, [x, 3.27, 0.045])
+      this.mesh(new THREE.BoxGeometry(0.16, 0.012, 0.09), datumMaterial, [x, 3.27, 0.045])
     }
 
     // display plinth: rounded body, overhanging top slab, brass reveals
@@ -563,20 +829,20 @@ export class WallScene {
 
     // baked contact shadows: floor under plinth, wall behind plinth
     const blobTexture = makeShadowBlobTexture()
-    const floorBlobMaterial = new THREE.MeshBasicMaterial({ map: blobTexture, transparent: true, opacity: 0.55, depthWrite: false })
+    const floorBlobMaterial = new THREE.MeshBasicMaterial({ map: blobTexture, transparent: true, opacity: 0.62, depthWrite: false })
     const floorBlob = this.mesh(new THREE.PlaneGeometry(13.2, 2.2), floorBlobMaterial, [10.2, 0.002, 0.62])
     floorBlob.rotation.x = -Math.PI / 2
     const wallBlob = this.mesh(new THREE.PlaneGeometry(12.3, 0.5), floorBlobMaterial.clone(), [10.2, 0.28, 0.004])
-    wallBlob.material.opacity = 0.4
+    wallBlob.material.opacity = 0.45
 
     // cove light strip + track
-    this.mesh(new THREE.BoxGeometry(18, 0.12, 0.1), new THREE.MeshStandardMaterial({ color: '#ffd6a0', emissive: '#ffc27a', emissiveIntensity: 2.1 }), [9, 3.25, 0.075])
+    this.mesh(new THREE.BoxGeometry(18, 0.12, 0.1), new THREE.MeshStandardMaterial({ color: '#efece7', emissive: INK.lampNeutral, emissiveIntensity: 1.1 }), [9, 3.25, 0.075])
     this.mesh(new THREE.BoxGeometry(18, 0.06, 0.06), darkMaterial, [9, 3.31, 1.3])
 
     const coneMaterial = new THREE.MeshBasicMaterial({
-      color: '#ffdcae',
+      color: '#f3efe8',
       transparent: true,
-      opacity: 0.02,
+      opacity: 0.013,
       blending: THREE.AdditiveBlending,
       depthWrite: false,
       side: THREE.DoubleSide,
@@ -586,7 +852,7 @@ export class WallScene {
       const x = 4.2 + (i - 0.5) * 2
       const fixture = this.mesh(new THREE.CylinderGeometry(0.045, 0.055, 0.12, 16), darkMaterial, [x, 3.22, 1.3])
       fixture.rotation.x = -0.35
-      const spot = new THREE.SpotLight('#ffe0b0', 9, 4.6, 0.34, 0.6, 1.6)
+      const spot = new THREE.SpotLight(INK.lampNeutral, 8, 4.6, 0.34, 0.6, 1.6)
       spot.position.set(x, 3.16, 1.3)
       spot.target.position.set(x, 1.1, 0.28)
       this.scene.add(spot, spot.target)
@@ -607,17 +873,17 @@ export class WallScene {
     }
     this.buildDust()
 
-    const washer = new THREE.RectAreaLight('#ffddb0', 3.4, 18, 0.12)
+    const washer = new THREE.RectAreaLight('#fdf9f3', 3.0, 18, 0.12)
     washer.position.set(9, 3.23, 0.16)
     washer.lookAt(9, 1.2, 0)
     this.scene.add(washer)
-    const titleLight = new THREE.RectAreaLight('#ffe1b8', 1.8, 4.2, 0.15)
+    const titleLight = new THREE.RectAreaLight('#fdf9f3', 1.6, 4.2, 0.15)
     titleLight.position.set(2.1, 3.18, 0.5)
     titleLight.lookAt(2.1, 1.8, 0)
     this.scene.add(titleLight)
-    const fill = new THREE.HemisphereLight('#d8cdb4', '#191b17', 0.3)
+    const fill = new THREE.HemisphereLight('#f2f0ed', '#b9b7b4', 0.9)
     this.scene.add(fill)
-    const shadowLight = new THREE.DirectionalLight('#ffddad', 1.1)
+    const shadowLight = new THREE.DirectionalLight('#f5f2ed', 1.1)
     shadowLight.position.set(6.5, 3.3, 2.9)
     shadowLight.target.position.set(10.2, 0.6, 0.2)
     shadowLight.castShadow = true
@@ -648,11 +914,11 @@ export class WallScene {
     const geometry = new THREE.BufferGeometry()
     geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3))
     const material = new THREE.PointsMaterial({
-      color: '#ffe9c8',
+      color: INK.dust,
       size: 0.011,
       transparent: true,
-      opacity: 0.3,
-      blending: THREE.AdditiveBlending,
+      opacity: 0.2,
+      blending: THREE.NormalBlending,
       depthWrite: false,
       sizeAttenuation: true,
     })
@@ -685,6 +951,7 @@ export class WallScene {
       const material = new THREE.MeshBasicMaterial({ map: makeZoneTexture(zone, this.language, this.showLabels, this.selectedId === zone.id), transparent: true, alphaTest: 0.015, depthWrite: false, side: THREE.DoubleSide })
       const mesh = new THREE.Mesh(new THREE.PlaneGeometry(zone.w, zone.h), material)
       mesh.position.set(zone.x + zone.w / 2, zone.y + zone.h / 2, 0.014 + zone.bay * 0.00005)
+      mesh.renderOrder = 2
       mesh.userData.zoneId = zone.id
       this.zoneGroup.add(mesh)
     }
@@ -821,7 +1088,7 @@ export class WallScene {
       0,
     )
     const fade = time > 84 ? 1 - (time - 84) / 6 * 0.58 : 1
-    this.renderer.toneMappingExposure = 0.92 * fade
+    this.renderer.toneMappingExposure = BASE_EXPOSURE * fade
   }
 
   private updateWalk(delta: number) {
@@ -863,7 +1130,7 @@ export class WallScene {
       }
       this.applyTour(this.time)
     } else {
-      this.renderer.toneMappingExposure = 0.92
+      this.renderer.toneMappingExposure = BASE_EXPOSURE
       this.updateWalk(delta)
     }
     this.updateDust(elapsed, delta)

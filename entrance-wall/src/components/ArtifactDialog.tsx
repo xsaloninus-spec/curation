@@ -71,12 +71,12 @@ export function ArtifactDialog({ object, config, language, onClose }: Props) {
           <div className="editor-header">
             <div>
               <span className="eyebrow">{section ? zoneText(section, language) || section.label : `OBJECT BAY ${bayLabel}`} · B{object.bay}</span>
-              <h2>{name ? zoneText(name, language) || name.label : `Object ${bayLabel}`}</h2>
+              <h2>{name ? zoneText(name, language) ?? '' : ''}</h2>
             </div>
             <button className="icon-button" onClick={onClose} title="Close · Esc"><X size={18} /></button>
           </div>
-          {meta && <p className="artifact-meta">{zoneText(meta, language) || meta.label}</p>}
-          <p className="artifact-caption">{caption ? zoneText(caption, language) || caption.label : 'No caption yet — open the editor to write one.'}</p>
+          {meta && <p className="artifact-meta">{zoneText(meta, language) ?? ''}</p>}
+          <p className="artifact-caption">{caption ? zoneText(caption, language) ?? '' : ''}</p>
           <p className="artifact-note">360° interactive view · drag to rotate, scroll or pinch to zoom, arrow keys to turn.</p>
         </aside>
       </section>
