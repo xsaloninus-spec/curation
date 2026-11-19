@@ -21,8 +21,8 @@
       "align": "center",
       "style": "verticalTitle",
       "text": {
-        "en": "",
-        "zh": "俱含影中"
+        "en": "镜",
+        "zh": "镜"
       }
     },
     {
@@ -71,7 +71,7 @@
       "align": "left",
       "style": "meta",
       "text": {
-        "en": "",
+        "en": "20.11.2026",
         "zh": ""
       }
     },
@@ -87,8 +87,8 @@
       "align": "left",
       "style": "meta",
       "text": {
-        "en": "",
-        "zh": ""
+        "en": "王耀民",
+        "zh": "王耀民"
       }
     },
     {
@@ -103,8 +103,8 @@
       "align": "left",
       "style": "meta",
       "text": {
-        "en": "",
-        "zh": ""
+        "en": "王耀民 窦珺婷 余谨如 潘久瑜",
+        "zh": "王耀民 窦珺婷 余谨如 潘久瑜"
       }
     },
     {
@@ -120,7 +120,7 @@
       "align": "left",
       "style": "body",
       "text": {
-        "en": "THINGS HAVE MEANING — As objects, mirrors played an intimate part in the daily life of the living and were buried with the dead over many centuries. Their reverse sides take a variety of decorations, inscriptions and inlays, presenting meanings and beauty.\nGENERAL FORMAT — Mirrors are radially symmetric with a rotating viewpoint, and the mirror surface is divided into quadrants.",
+        "en": "THINGS HAVE MEANING — As objects, mirrors played an intimate part in the daily life of the living and were buried with the dead over many centuries. Their reverse sides take a variety of decorations, inscriptions and inlays, presenting meanings and beauty.\n\nGENERAL FORMAT — Mirrors are radially symmetric with a rotating viewpoint, and the mirror surface is divided into quadrants.",
         "zh": ""
       }
     },
@@ -137,8 +137,8 @@
       "align": "left",
       "style": "body",
       "text": {
-        "en": "",
-        "zh": ""
+        "en": "360度文物观赏需要先点下方轴线确认文化，再点击文物模型",
+        "zh": "360度文物观赏需要先点下方轴线确认文化，再点击文物模型"
       }
     },
     {
@@ -223,7 +223,7 @@
       "align": "left",
       "style": "section",
       "text": {
-        "en": "OPENWORK",
+        "en": "Mirror in Pre-Qin Period",
         "zh": "透雕"
       },
       "words": 4,
@@ -297,7 +297,7 @@
       "align": "left",
       "style": "section",
       "text": {
-        "en": "COSMIC ORDER",
+        "en": "Cosmic Mirror in Han Period",
         "zh": "宇宙秩序"
       }
     },
@@ -369,7 +369,7 @@
       "align": "left",
       "style": "section",
       "text": {
-        "en": "SILK ROAD GOLD",
+        "en": "Sui & Tang Dynasty",
         "zh": "丝路金辉"
       }
     },
@@ -441,7 +441,7 @@
       "align": "left",
       "style": "section",
       "text": {
-        "en": "COLLECTING",
+        "en": "Song & Yuan Dynasties",
         "zh": "收藏"
       }
     },
@@ -513,7 +513,7 @@
       "align": "left",
       "style": "section",
       "text": {
-        "en": "COURT & MEMORY",
+        "en": "Ming & Qing Dynasties",
         "zh": "宫廷与记忆"
       }
     },
@@ -585,7 +585,7 @@
       "align": "left",
       "style": "body",
       "text": {
-        "en": "The Chinese culture of the mirror followed the development of mirror casting and the evolution of popular aesthetic taste. Through the mirror, we see the historical reflection of bronze technology, mortuary practices, philosophical thoughts, religion, commerce, daily life, cultural communication and fashion taste — all parts called Chinese culture.",
+        "en": "The Chinese culture of mirror followed along the developments of mirror casting and evolution of popular culture aesthetic. Through the mirror, we could see the historical reflection of bronze technology, mortuary practices, philosophical thoughts, religion, commerce, daily life, cultural communication, and fashion taste, that are all the parts called Chinese cultures.",
         "zh": ""
       }
     },
@@ -601,7 +601,7 @@
       "align": "left",
       "style": "meta",
       "text": {
-        "en": "",
+        "en": "Thank you!",
         "zh": ""
       }
     }
