@@ -22,7 +22,7 @@
       "style": "verticalTitle",
       "text": {
         "en": "",
-        "zh": ""
+        "zh": "俱含影中"
       }
     },
     {
@@ -38,7 +38,7 @@
       "align": "left",
       "style": "title",
       "text": {
-        "en": "",
+        "en": "All Is Contained in Its Reflection",
         "zh": ""
       }
     },
@@ -55,8 +55,8 @@
       "align": "left",
       "style": "subtitle",
       "text": {
-        "en": "",
-        "zh": ""
+        "en": "Chinese Culture in the Mirror",
+        "zh": "镜中的中国文化"
       }
     },
     {
@@ -120,7 +120,7 @@
       "align": "left",
       "style": "body",
       "text": {
-        "en": "",
+        "en": "THINGS HAVE MEANING — As objects, mirrors played an intimate part in the daily life of the living and were buried with the dead over many centuries. Their reverse sides take a variety of decorations, inscriptions and inlays, presenting meanings and beauty.\nGENERAL FORMAT — Mirrors are radially symmetric with a rotating viewpoint, and the mirror surface is divided into quadrants.",
         "zh": ""
       }
     },
@@ -171,8 +171,12 @@
       "align": "left",
       "style": "object",
       "text": {
-        "en": "",
-        "zh": ""
+        "en": "Seven-Point Star Mirror",
+        "zh": "七角星纹铜镜"
+      },
+      "dialog": {
+        "meta": "Name: 七角星纹铜镜 · Late Qijia, c. 2200–1600 BC (C14 range for the culture: 2183–1630 BC) · Material: copper–tin bronze, c. 9% Sn (Cu : Sn = 1 : 0.096, fast-neutron activation) · Dimensions: diameter c. 9 cm, thickness 0.25 cm, weight 109 g · Find spot: Gamatai (尕马台) cemetery, Guinan County, Qinghai; M25 · Excavation: summer 1977, 1,626 m², 44 Qijia tombs plus one urn burial · Current location: Qinghai Provincial Museum, Xining",
+        "caption": "Cast by the Qijia culture of the upper Yellow River, this small bronze disc is among the earliest mirrors known in China. It comes from the northwest, in a zone of interaction between different cultural groups. As several regional centers operated simultaneously and artistic influence moved in complicated patterns between cultural centers, the Qijia mirror stands as a key early case in this broader picture."
       }
     },
     {
@@ -188,7 +192,7 @@
       "align": "left",
       "style": "caption",
       "text": {
-        "en": "",
+        "en": "Excavated in 1977 from tomb M25 at the Gamatai cemetery in Guinan County, Qinghai, this small bronze disc is among the earliest mirrors known in China. Its back carries a seven-point star around a pierced knob, one face polished to hold a reflection. It comes from a northwestern zone of interaction between cultural groups, key evidence of early artistic exchange.",
         "zh": ""
       }
     },
@@ -204,7 +208,7 @@
       "align": "left",
       "style": "meta",
       "text": {
-        "en": "",
+        "en": "c. 2200–1600 BC · Copper–tin bronze · Qinghai Provincial Museum",
         "zh": ""
       }
     },
@@ -236,11 +240,16 @@
       "align": "left",
       "style": "object",
       "text": {
-        "en": "",
-        "zh": ""
+        "en": "Double-Tier Mirror with Interlaced Dragons",
+        "zh": "蟠螭紋銅鏡"
       },
       "words": 4,
-      "lines": 1
+      "lines": 1,
+      "dialog": {
+        "meta": "Full name: 蟠螭紋銅鏡 · Period: Eastern Zhou, Warring States period · Collection: The Metropolitan Museum of Art, USA · Dimensions: diam. 13.3 cm (5 1/4 in.) · Material: bronze",
+        "caption": "During the Warring States, the native tradition of mirror casting was established. At the same time, mirrors began to accompany the deceased in tombs, as part of a new trend to provide the dead with personal articles used in daily life.\n\nINHERITANCE — Early mirrors, as subordinate objects, shared design features with bronze ritual vessels, which were usually made in the same workshops. The fine-patterned backgrounds were originally descended from the “thunder pattern” (雷云纹) of squared spirals on the ritual vessels.\n\nINVENTION — In this period, openwork grilles replaced the earlier horse-and-chariot gear buried in tombs, where bronze disks were included. Based on this new technique, craftsmen put grille and mirror together to create the new double-tier mirror.",
+        "subtitle": "Mirror in Pre-Qin Period — The start of native tradition and independent development"
+      }
     },
     {
       "id": "caption.02",
@@ -253,7 +262,7 @@
       "align": "left",
       "style": "caption",
       "text": {
-        "en": "",
+        "en": "During the Warring States, a native tradition of mirror casting was established in China, and mirrors began to accompany the deceased in tombs, a new trend to provide the dead with the personal articles they had used in daily life. This mirror is built in two tiers: an openwork grille of interlaced dragons set before a plain backing disc.",
         "zh": ""
       },
       "words": 60,
@@ -270,7 +279,7 @@
       "align": "left",
       "style": "meta",
       "text": {
-        "en": "",
+        "en": "Eastern Zhou, Warring States · Bronze · The Metropolitan Museum of Art",
         "zh": ""
       },
       "lines": 1
@@ -305,8 +314,13 @@
       "align": "left",
       "style": "object",
       "text": {
-        "en": "",
-        "zh": ""
+        "en": "TLV Mirror with Four Spirits and Companions",
+        "zh": "四神博局式青铜鏡"
+      },
+      "dialog": {
+        "meta": "Full name: 四神博局式青铜鏡 · Period: Han dynasty, 9–100 CE · Collection: The Cleveland Museum of Art, USA · Dimensions: diam. 19 cm (7 1/2 in.) · Material: bronze",
+        "caption": "Chinese mirror casting reached its first peak in the Han dynasty under government-led standardized mirror production. Simultaneously, the development of Han cosmology endowed the mirror with great cultural significance.\n\nCOMMUNICATIVE MEDIA TOWARD THE COSMOS\n\nREPRESENTING THE COSMIC SCHEME — Han thinkers incorporated former cosmology and developed a mature correlative cosmology. Mirrors represented this kind of cosmic scheme. The TLV pattern, inspired from the diviner’s board (式盤), symbolized the regulation of cosmic order.\n\nRELIGIOUS PRACTICE — As the power of reflection, even if for the hereafter, the mirror could set a man permanently in his correct relation in the cosmic order.\n\nCosmic correspondences: 圓 — heaven; 方 — earth; 極星 — the pole star; 四獸 — metal, wood, water, fire, yin and yang; 天干地支 — the calendrical signs.",
+        "subtitle": "Cosmic Mirror in Han Period — Increasing cultural significance and usage of religion practice"
       }
     },
     {
@@ -322,7 +336,7 @@
       "align": "left",
       "style": "caption",
       "text": {
-        "en": "",
+        "en": "Chinese mirror casting reached its first peak in the Han dynasty under government-led, standardized production. At the same time, the development of Han cosmology endowed the mirror with great cultural significance: its TLV marks, inspired by the diviner’s board, symbolize the regulation of cosmic order.",
         "zh": ""
       }
     },
@@ -338,7 +352,7 @@
       "align": "left",
       "style": "meta",
       "text": {
-        "en": "",
+        "en": "Han dynasty, 9–100 CE · Bronze · The Cleveland Museum of Art",
         "zh": ""
       }
     },
@@ -372,8 +386,13 @@
       "align": "left",
       "style": "object",
       "text": {
-        "en": "",
-        "zh": ""
+        "en": "Gold-Backed Beast & Grape Mirror",
+        "zh": "金背瑞兽葡萄镜"
+      },
+      "dialog": {
+        "meta": "Full name: Gold-Backed Beast&Grape Mirror 金背瑞兽葡萄镜 · Period: Tang dynasty (618–907 CE) · Source: excavated in 2002 from the Tang tomb of Yan Chi and his wife at Majiagou, Baqiao, Xi’an · Current collection: Xi’an Museum · Dimensions: eight-lobed shape · Material: bronze, gold (repoussé 锤揲工艺)",
+        "caption": "This mirror invites us to see how Silk Road trade reshaped Tang visual culture. At its center, traditional Chinese auspicious beasts are surrounded by scrolling vines and grape motifs — symbols imported from Central and West Asia. The eight-lobed floral shape also breaks the rigid circular tradition of earlier dynasties. In Tang China, mirrors shifted from Han-era cosmological talismans to luxurious, worldly commodities. The exotic decoration reflects not only the elite’s fascination with foreign cultures but also a broader cultural openness, where global trade networks seamlessly integrated with local craftsmanship on a personal object.\n\nGROUP MOTIFS — Auspicious beasts · Eight-lobed form.\n\nNotice the repoussé gold shell (锤揲金背) on the back. Unlike the heavy, dark bronze of the Han dynasty, this gold-backing technique makes the mirror exceptionally luxurious and bright. As sacred and cosmological attributes faded, the mirror became a symbol of earthly prosperity. The Tang elite deliberately embraced these highly decorative, exotic features to display their wealth. It marks the transitional moment when mirrors became a romantic, secular luxury item for daily life, paving the way for the mass markets of the Song dynasty.",
+        "subtitle": "Sui & Tang Dynasty — Silk Road Encounters: From Sacred Symbols to Worldly Romance"
       }
     },
     {
@@ -389,7 +408,7 @@
       "align": "left",
       "style": "caption",
       "text": {
-        "en": "",
+        "en": "This mirror shows how Silk Road trade reshaped Tang visual culture: traditional Chinese auspicious beasts are surrounded by scrolling vines and grape motifs imported from Central and West Asia, and the eight-lobed floral shape breaks the rigid circular tradition of earlier dynasties. Mirrors had shifted from Han cosmological talismans to luxurious, worldly commodities.",
         "zh": ""
       }
     },
@@ -405,7 +424,7 @@
       "align": "left",
       "style": "meta",
       "text": {
-        "en": "",
+        "en": "Tang dynasty, 618–907 · Bronze & gold (repoussé) · Xi’an Museum",
         "zh": ""
       }
     },
@@ -439,8 +458,13 @@
       "align": "left",
       "style": "object",
       "text": {
-        "en": "",
-        "zh": ""
+        "en": "Mirror with an Immortal Riding a Deer",
+        "zh": "仙人骑鹿镜"
+      },
+      "dialog": {
+        "meta": "Full name: Mirror with an Immortal Riding a Deer 仙人骑鹿镜 · Period: Song dynasty · Source: britishmuseum.org/collection/object/A_1990-0531-8 · Current collection: The British Museum, London · Dimensions: diameter 10.30 cm; length 18.80 cm (with handle); weight 291 g · Material: bronze",
+        "caption": "This bronze mirror invites us to see how Daoist ideas entered everyday life. At its centre, an immortal rides a deer, accompanied by a crane, auspicious clouds, and an attendant. The deer and crane are familiar Daoist symbols of longevity and transcendence. Yet the scene is remarkably approachable: faith does not only exist in palaces and Daoist temples, but also integrates into the public’s daily life on the back of the mirror. This is the secularization of Daoist belief in visual form — not an invitation to leave the world for paradise, but a promise of protection, health, and long life carried on a personal object.\n\nNORMALIZATION — Notice the handle at the bottom of the mirror, which turns the sacred image into something that can be held in hand, and brings the mirror closer to commoners, facilitating everyday use.\n\nCOMMERCIALIZATION — As ritual attributes faded, commercial thoughts entered the mirror. The craftsman deliberately packaged this approachable deity as a marketable selling point to attract ordinary buyers, reflecting the logic of a mass market.",
+        "subtitle": "Song & Yuan Dynasties — The commercialization and secularization of mirrors reveal new thoughts and themes"
       }
     },
     {
@@ -456,7 +480,7 @@
       "align": "left",
       "style": "caption",
       "text": {
-        "en": "",
+        "en": "At its centre an immortal rides a deer, accompanied by a crane, auspicious clouds and an attendant; the deer and crane are familiar Daoist symbols of longevity and transcendence. The approachable scene shows faith integrating into the public’s daily life: not an invitation to leave the world, but a promise of protection, health and long life on a personal object.",
         "zh": ""
       }
     },
@@ -472,7 +496,7 @@
       "align": "left",
       "style": "meta",
       "text": {
-        "en": "",
+        "en": "Song dynasty · Bronze · The British Museum, London",
         "zh": ""
       }
     },
@@ -506,8 +530,13 @@
       "align": "left",
       "style": "object",
       "text": {
-        "en": "",
-        "zh": ""
+        "en": "Handled Mirror with Blue Transparent Enamel and Gilt “Xi” Character Decoration",
+        "zh": "蓝透明珐琅描金喜字把镜"
+      },
+      "dialog": {
+        "meta": "Full name: Handled Mirror with Blue Transparent Enamel and Gilt “Xi” Character Decoration 蓝透明珐琅描金喜字把镜 · Period: Qing dynasty · Source: dpm.org.cn/collection/utensil/230188.html · Current collection: The Palace Museum, Beijing · Dimensions: length 27.9 cm, width 12.5 cm · Material: glass, copper, gold, ivory, coral",
+        "caption": "Unlike the cast bronze mirrors preceding it, this object features a Western-style glass mirror on the front. The back, framed by transparent blue enamel, is a masterpiece of late Qing craftsmanship. A central “Double Happiness” (囍) character, symbolizing marital bliss, is surrounded by the Eight Buddhist Emblems and a “Wan” (卍) symbol ground, representing infinity and good fortune.\n\nNote the handle, brilliantly assembled from stained ivory and carved coral. Produced in Guangdong as a tribute to the imperial court, it combines imported glass with local techniques. Here, the mirror is no longer a medium for religious narratives or market brands; it has become a multi-material luxury good, reflecting the global trade networks and luxurious aesthetic of its time.",
+        "subtitle": "Ming & Qing Dynasties — Western technology brought new materials"
       }
     },
     {
@@ -523,7 +552,7 @@
       "align": "left",
       "style": "caption",
       "text": {
-        "en": "",
+        "en": "Unlike earlier cast bronze mirrors, this object has a Western-style glass mirror on the front. The back, framed by transparent blue enamel, centres a gilt Double Happiness character among the Eight Buddhist Emblems on a Wan-symbol ground; the handle is assembled from stained ivory and carved coral. Produced in Guangdong as an imperial tribute, it is a multi-material luxury good.",
         "zh": ""
       }
     },
@@ -539,7 +568,7 @@
       "align": "left",
       "style": "meta",
       "text": {
-        "en": "",
+        "en": "Qing dynasty · Glass, copper, gold, ivory, coral · The Palace Museum, Beijing",
         "zh": ""
       }
     },
@@ -556,7 +585,7 @@
       "align": "left",
       "style": "body",
       "text": {
-        "en": "",
+        "en": "The Chinese culture of the mirror followed the development of mirror casting and the evolution of popular aesthetic taste. Through the mirror, we see the historical reflection of bronze technology, mortuary practices, philosophical thoughts, religion, commerce, daily life, cultural communication and fashion taste — all parts called Chinese culture.",
         "zh": ""
       }
     },

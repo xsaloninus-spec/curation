@@ -134,7 +134,7 @@ button { cursor: pointer; }
 .artifact-info .editor-header { padding: 20px 20px 0; }
 .artifact-info h2 { font-size: 20px; line-height: 1.25; color: #1a1a1a; min-height: 25px; }
 .artifact-meta { margin: 14px 20px 0; padding-top: 12px; border-top: 1px solid rgba(26,26,26,.18); color: #6e6c69; font: 500 9px ui-monospace, monospace; letter-spacing: .1em; text-transform: uppercase; min-height: 22px; }
-.artifact-caption { margin: 14px 20px 0; color: #3c3c3c; font-size: 11.5px; line-height: 1.75; overflow-y: auto; min-height: 60px; }
+.artifact-caption { margin: 14px 20px 0; color: #3c3c3c; font-size: 11.5px; line-height: 1.75; overflow-y: auto; min-height: 60px; white-space: pre-line; }
 .artifact-note { margin: auto 20px 0; padding-top: 18px; color: #8a8885; font-size: 9.5px; line-height: 1.6; }
 @media (max-width: 860px) {
   .artifact-modal { grid-template-columns: 1fr; overflow-y: auto; }

@@ -603,11 +603,23 @@ function makeZoneTexture(zone: WallZone, language: Language, showLabels: boolean
       characters.forEach((character, index) => context.fillText(character, width / 2, pad + Math.max(0, (height - pad * 2 - lineHeight * characters.length) / 2 + index * lineHeight)))
     } else {
       const padding = px(0.014) + (hasCard ? px(0.008) : 0)
-      const lines = textLines(context, text, width - padding * 2).slice(0, zone.lines)
-      const lineHeight = size * (zone.style === 'body' || zone.style === 'caption' ? 1.5 : 1.18)
+      const maxTextWidth = width - padding * 2
       context.textAlign = zone.align
       const x = zone.align === 'center' ? width / 2 : zone.align === 'right' ? width - padding : padding
-      lines.forEach((line, index) => context.fillText(line, x, padding + index * lineHeight))
+      if (zone.lines <= 1) {
+        // Single-line fields (names, titles, meta): shrink the type to fit instead of truncating.
+        let fitSize = size
+        const minSize = size * 0.5
+        while (fitSize > minSize && context.measureText(text).width > maxTextWidth) {
+          fitSize = Math.max(minSize, fitSize * 0.93)
+          context.font = `${isSerif ? 500 : 400} ${fitSize}px ${isSerif ? serifStack : sansStack}`
+        }
+        context.fillText(text, x, padding)
+      } else {
+        const lines = textLines(context, text, maxTextWidth).slice(0, zone.lines)
+        const lineHeight = size * (zone.style === 'body' || zone.style === 'caption' ? 1.5 : 1.18)
+        lines.forEach((line, index) => context.fillText(line, x, padding + index * lineHeight))
+      }
     }
   }
   const texture = new THREE.CanvasTexture(canvas)

@@ -7,6 +7,16 @@ export interface LocalizedText {
   zh: string
 }
 
+/** Extended content shown only in the 360° artifact dialog (basic info stays on the wall plaque). */
+export interface ZoneDialog {
+  /** Chapter subtitle displayed at the top of the dialog info panel. */
+  subtitle?: string
+  /** Full one-block metadata line (full name, source, dimensions, collection). */
+  meta?: string
+  /** Long-form interpretive text (may contain blank-line paragraphs). */
+  caption?: string
+}
+
 export interface WallZone {
   id: string
   bay: number
@@ -21,6 +31,8 @@ export interface WallZone {
   align: 'left' | 'center' | 'right'
   style: 'title' | 'verticalTitle' | 'subtitle' | 'body' | 'section' | 'object' | 'caption' | 'meta'
   text: LocalizedText
+  /** Optional dialog-only content; the dialog falls back to the plaque text when absent. */
+  dialog?: ZoneDialog
 }
 
 export interface WallObject {

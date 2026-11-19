@@ -34,6 +34,12 @@ export function ArtifactDialog({ object, config, language, onClose }: Props) {
   const name = zoneById(config, `object.${bayLabel}.name`)
   const caption = zoneById(config, `caption.${bayLabel}`)
   const meta = zoneById(config, `meta.${bayLabel}`)
+  // Extended dialog-only content (English per curation); falls back to the plaque text when absent.
+  const dialog = name?.dialog
+  const nameValue = name ? (zoneText(name, language) || zoneText(name, language === 'en' ? 'zh' : 'en')) : ''
+  const subtitleValue = dialog?.subtitle ?? (section ? zoneText(section, language) || section.label : `OBJECT BAY ${bayLabel}`)
+  const metaValue = dialog?.meta ?? (meta ? (zoneText(meta, language) || zoneText(meta, language === 'en' ? 'zh' : 'en')) : '')
+  const captionValue = dialog?.caption ?? (caption ? (zoneText(caption, language) || zoneText(caption, language === 'en' ? 'zh' : 'en')) : '')
 
   const onKeyDown = (event: ReactKeyboardEvent) => {
     const view = viewer.current
@@ -70,13 +76,13 @@ export function ArtifactDialog({ object, config, language, onClose }: Props) {
         <aside className="artifact-info">
           <div className="editor-header">
             <div>
-              <span className="eyebrow">{section ? zoneText(section, language) || section.label : `OBJECT BAY ${bayLabel}`} · B{object.bay}</span>
-              <h2>{name ? zoneText(name, language) ?? '' : ''}</h2>
+              <span className="eyebrow">{subtitleValue} · B{object.bay}</span>
+              <h2>{nameValue}</h2>
             </div>
             <button className="icon-button" onClick={onClose} title="Close · Esc"><X size={18} /></button>
           </div>
-          {meta && <p className="artifact-meta">{zoneText(meta, language) ?? ''}</p>}
-          <p className="artifact-caption">{caption ? zoneText(caption, language) ?? '' : ''}</p>
+          {meta && <p className="artifact-meta">{metaValue}</p>}
+          <p className="artifact-caption">{captionValue}</p>
           <p className="artifact-note">360° interactive view · drag to rotate, scroll or pinch to zoom, arrow keys to turn.</p>
         </aside>
       </section>
