@@ -1,5 +1,6 @@
 import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
+import { MeshoptDecoder } from 'three/examples/jsm/libs/meshopt_decoder.module.js'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js'
 
@@ -161,7 +162,9 @@ export class ArtifactViewer {
 
   private async load(url: string) {
     try {
-      const gltf = await new GLTFLoader().loadAsync(url)
+      const loader = new GLTFLoader()
+      loader.setMeshoptDecoder(MeshoptDecoder)
+      const gltf = await loader.loadAsync(url)
       if (this.disposed) return
       let source: THREE.Object3D = gltf.scene
       if (this.options.rotationY) {

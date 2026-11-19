@@ -1,5 +1,6 @@
 import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
+import { MeshoptDecoder } from 'three/examples/jsm/libs/meshopt_decoder.module.js'
 import { RectAreaLightUniformsLib } from 'three/examples/jsm/lights/RectAreaLightUniformsLib.js'
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js'
 import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js'
@@ -1280,6 +1281,7 @@ export class WallScene {
   /** Load the GLB models configured in wall.json into their display cases. */
   private async loadConfiguredModels() {
     const loader = new GLTFLoader()
+    loader.setMeshoptDecoder(MeshoptDecoder)
     let stale = false
     for (const object of this.config.objects) {
       if (!object.model || this.models.has(object.bay) || this.suppressedBays.has(object.bay) || this.loadingBays.has(object.bay)) continue
